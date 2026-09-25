@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guess the Celebrity</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@500;600;700;800;900&family=Manrope:wght@700;800&display=swap');
+
+:root{
+  --bg:#111111;
+  --card:#f4f1ea;
+  --ink:#151515;
+  --muted:#77736d;
+  --line:#d8d3ca;
+  --accent:#e9ff4f;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg);font-family:"DM Sans",system-ui,sans-serif}
+body{color:var(--ink)}
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+
+.app{min-height:100vh;display:grid;place-items:center;padding:18px 10px}
+.quiz{
+  position:relative;width:360px;max-width:92vw;aspect-ratio:9/16;
+  overflow:hidden;background:var(--card);border:1px solid #000;
+  border-radius:18px;box-shadow:0 12px 35px rgba(0,0,0,.35)
+}
+.quiz-content{height:100%;padding:22px 20px 18px;display:flex;flex-direction:column}
+
+.header{display:flex;align-items:flex-start;justify-content:space-between}
+.eyebrow{
+  font-size:10px;font-weight:900;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:7px
+}
+.title{
+  margin:0;font-family:Manrope,sans-serif;font-size:31px;line-height:.98;
+  letter-spacing:-.055em;max-width:285px
+}
+.title span{display:block}
+.fullscreen{
+  width:36px;height:36px;flex:none;border:1px solid var(--ink);border-radius:50%;
+  background:transparent;color:var(--ink);font-size:17px
+}
+.fullscreen:hover{background:var(--ink);color:var(--card)}
+
+.hints{
+  margin-top:25px;display:flex;flex-direction:column;gap:9px
+}
+.hint{
+  min-height:58px;border:1px solid var(--ink);border-radius:9px;
+  padding:11px 13px;display:flex;align-items:center;gap:12px;
+  background:rgba(255,255,255,.34);transition:background .25s,transform .25s
+}
+.hint.revealed{background:#fff;border-color:var(--ink)}
+.hint-number{
+  width:25px;height:25px;display:grid;place-items:center;flex:none;
+  border:1px solid var(--ink);border-radius:50%;font-size:10px;font-weight:900
+}
+.hint-copy{min-width:0;font-size:12px;line-height:1.28;font-weight:700}
+.hint.locked .hint-number{background:var(--ink);color:var(--card)}
+.hint.locked .hint-copy{font-family:Manrope,sans-serif;font-size:18px;letter-spacing:.02em}
+.hint.reveal{animation:reveal .5s cubic-bezier(.2,.8,.2,1) both}
+@keyframes reveal{
+  from{opacity:.2;transform:translateY(7px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+.bottom{
+  margin-top:auto;padding-top:18px;text-align:center
+}
+.counter{
+  font-family:Manrope,sans-serif;font-size:36px;font-weight:800;letter-spacing:-.05em;
+  line-height:1;margin-bottom:10px
+}
+.tip{
+  max-width:245px;margin:0 auto;font-size:10px;line-height:1.35;
+  color:var(--muted);font-weight:700
+}
+.tip.final{color:var(--ink);font-size:11px}
+.final-message{
+  font-family:Manrope,sans-serif;font-size:25px;font-weight:800;
+  letter-spacing:-.04em;line-height:1.05;margin-bottom:9px
+}
+
+.edit-hint{
+  position:absolute;bottom:10px;left:50%;transform:translateX(-50%);
+  font-size:8px;color:rgba(0,0,0,.25);white-space:nowrap
+}
+
+.modal-backdrop{
+  position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;
+  padding:20px;background:rgba(0,0,0,.72)
+}
+.modal-backdrop.open{display:flex}
+.form{
+  width:min(420px,100%);max-height:90vh;overflow:auto;background:#f4f1ea;
+  border:1px solid #000;border-radius:16px;padding:20px;box-shadow:0 12px 35px rgba(0,0,0,.35)
+}
+.form h2{margin:0 0 18px;font-family:Manrope,sans-serif;font-size:21px}
+.field{margin-bottom:12px}
+.field label{display:block;margin-bottom:5px;font-size:10px;font-weight:900;letter-spacing:.12em}
+.field textarea,.field input{
+  width:100%;border:1px solid #000;border-radius:8px;padding:10px;background:#fff;
+  font-size:13px;font-weight:600;outline:none;resize:vertical
+}
+.field textarea:focus,.field input:focus{box-shadow:inset 0 0 0 2px var(--accent)}
+.actions{display:flex;gap:9px;margin-top:17px}
+.actions button{
+  flex:1;border:1px solid #000;border-radius:8px;padding:10px;
+  font-size:11px;font-weight:900
+}
+.cancel{background:#fff}
+.submit{background:var(--accent)}
+
+@media(max-height:700px){
+  .quiz-content{padding-top:17px;padding-bottom:14px}
+  .title{font-size:28px}
+  .hints{margin-top:17px;gap:7px}
+  .hint{min-height:52px;padding:9px 11px}
+  .bottom{padding-top:12px}
+  .counter{font-size:31px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <script>
+    const CONFIG = {
+      celebrity: "Celebrity Name",
+      hint1: "Started their career as a child actor.",
+      hint2: "Known for a major role in a popular film.",
+      hint3: "Has received multiple major award nominations.",
+      hint4: "Also works in television and other projects."
+    };
+  </script>
+
+  <main class="quiz" id="quiz">
+    <div class="quiz-content">
+      <header class="header">
+        <div>
+          <div class="eyebrow">ZEUX TRIVIA</div>
+          <h1 class="title"><span>GUESS</span><span>THE CELEBRITY</span></h1>
+        </div>
+        <button class="fullscreen" id="fullscreenBtn" aria-label="Enter fullscreen">⛶</button>
+      </header>
+
+      <section class="hints" id="hints">
+        <div class="hint revealed" id="hintBox1">
+          <span class="hint-number">01</span>
+          <span class="hint-copy" id="hintText1"></span>
+        </div>
+        <div class="hint locked" id="hintBox2">
+          <span class="hint-number">02</span>
+          <span class="hint-copy" id="hintText2">5</span>
+        </div>
+        <div class="hint locked" id="hintBox3">
+          <span class="hint-number">03</span>
+          <span class="hint-copy" id="hintText3">—</span>
+        </div>
+        <div class="hint locked" id="hintBox4">
+          <span class="hint-number">04</span>
+          <span class="hint-copy" id="hintText4">—</span>
+        </div>
+      </section>
+
+      <div class="bottom">
+        <div class="counter" id="counter">5</div>
+        <div class="tip" id="tip">pause the video if you need more time</div>
+      </div>
+
+      <div class="edit-hint">click the card to edit</div>
+    </div>
+  </main>
+</div>
+
+<div class="modal-backdrop" id="modal">
+  <form class="form" id="form">
+    <h2>Edit Celebrity</h2>
+    <div class="field">
+      <label for="celebrityInput">CELEBRITY (NOT SHOWN)</label>
+      <input id="celebrityInput" type="text" required>
+    </div>
+    <div class="field"><label for="hint1Input">HINT 1</label><textarea id="hint1Input" rows="2" required></textarea></div>
+    <div class="field"><label for="hint2Input">HINT 2</label><textarea id="hint2Input" rows="2" required></textarea></div>
+    <div class="field"><label for="hint3Input">HINT 3</label><textarea id="hint3Input" rows="2" required></textarea></div>
+    <div class="field"><label for="hint4Input">HINT 4</label><textarea id="hint4Input" rows="2" required></textarea></div>
+    <div class="actions">
+      <button type="button" class="cancel" id="cancelBtn">CANCEL</button>
+      <button type="submit" class="submit">SAVE</button>
+    </div>
+  </form>
+</div>
+
+<script>
+let elapsed = 0;
+let running = false;
+let timerId = null;
+let finished = false;
+
+const $ = id => document.getElementById(id);
+
+function setHint(box, text, revealed){
+  const copy = box.querySelector(".hint-copy");
+  copy.textContent = text;
+  box.classList.toggle("locked", !revealed);
+  box.classList.toggle("revealed", revealed);
+}
+
+function revealHint(number){
+  const box = $("hintBox" + number);
+  const text = CONFIG["hint" + number];
+  setHint(box, text, true);
+  box.classList.remove("reveal");
+  void box.offsetWidth;
+  box.classList.add("reveal");
+}
+
+function update(){
+  $("hintText1").textContent = CONFIG.hint1;
+
+  if(finished){
+    $("counter").style.display = "none";
+    $("tip").textContent = "check first comment for answer";
+    $("tip").classList.add("final");
+    return;
+  }
+
+  $("counter").textContent = Math.max(0, 5 - (elapsed % 5));
+}
+
+function tick(){
+  elapsed++;
+
+  if(elapsed === 5) revealHint(2);
+  if(elapsed === 10) revealHint(3);
+  if(elapsed === 15) revealHint(4);
+
+  if(elapsed >= 20){
+    finished = true;
+    running = false;
+    clearInterval(timerId);
+  }
+
+  update();
+}
+
+function start(){
+  if(running || finished) return;
+  running = true;
+  update();
+  timerId = setInterval(tick, 1000);
+}
+
+function reset(){
+  clearInterval(timerId);
+  elapsed = 0;
+  running = false;
+  finished = false;
+
+  setHint($("hintBox1"), CONFIG.hint1, true);
+  setHint($("hintBox2"), "5", false);
+  setHint($("hintBox3"), "—", false);
+  setHint($("hintBox4"), "—", false);
+
+  $("counter").style.display = "block";
+  $("tip").textContent = "pause the video if you need more time";
+  $("tip").classList.remove("final");
+  update();
+}
+
+function openModal(){
+  $("celebrityInput").value = CONFIG.celebrity;
+  $("hint1Input").value = CONFIG.hint1;
+  $("hint2Input").value = CONFIG.hint2;
+  $("hint3Input").value = CONFIG.hint3;
+  $("hint4Input").value = CONFIG.hint4;
+  $("modal").classList.add("open");
+}
+
+$("quiz").onclick = event => {
+  if(event.target.closest("#fullscreenBtn")) return;
+  openModal();
+};
+
+$("form").onsubmit = event => {
+  event.preventDefault();
+  CONFIG.celebrity = $("celebrityInput").value.trim();
+  CONFIG.hint1 = $("hint1Input").value.trim();
+  CONFIG.hint2 = $("hint2Input").value.trim();
+  CONFIG.hint3 = $("hint3Input").value.trim();
+  CONFIG.hint4 = $("hint4Input").value.trim();
+  reset();
+  $("modal").classList.remove("open");
+};
+
+$("cancelBtn").onclick = () => $("modal").classList.remove("open");
+
+$("modal").onclick = event => {
+  if(event.target === $("modal")) $("modal").classList.remove("open");
+};
+
+$("fullscreenBtn").onclick = async event => {
+  event.stopPropagation();
+  try{
+    if(!document.fullscreenElement) await $("quiz").requestFullscreen();
+    else await document.exitFullscreen();
+  }catch(e){ console.warn("Fullscreen unavailable:", e); }
+};
+
+$("quiz").addEventListener("click", event => {
+  if(event.target.closest(".hint")) start();
+});
+
+reset();
+</script>
+</body>
+</html>
