@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Guess the Celebrity</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&display=swap');
 
 :root{
   --blue:#123b8f;
@@ -17,7 +17,7 @@
 }
 *{box-sizing:border-box}
 html,body{
-  margin:0;min-height:100%;font-family:"Rubik",system-ui,sans-serif;
+  margin:0;min-height:100%;font-family:"Google Sans",system-ui,sans-serif;
   background:linear-gradient(135deg,var(--blue) 0%,var(--light-blue) 100%);
 }
 body{color:var(--white)}
@@ -65,7 +65,7 @@ button{cursor:pointer}
 .header{display:flex;align-items:flex-start;justify-content:space-between}
 .eyebrow{
   display:inline-flex;align-items:center;gap:5px;
-  font-size:12px;font-weight:900;letter-spacing:.16em;text-transform:uppercase;
+  font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
   color:var(--white);margin-bottom:7px
 }
 .eyebrow::first-line{color:var(--white)}
@@ -76,7 +76,7 @@ button{cursor:pointer}
 }
 .title{
   margin:30px 0 0;font-family:"Rubik",system-ui,sans-serif;font-size:35px;line-height:.95;
-  font-weight:900;letter-spacing:-.06em;max-width:310px;
+  font-weight:700;letter-spacing:-.06em;max-width:310px;
   background:linear-gradient(135deg,#fff7c2 0%,#f7d85a 45%,#ffffff 100%);
   -webkit-background-clip:text;background-clip:text;color:transparent;
   filter:drop-shadow(1px 1px 1px rgba(0,0,0,.35))
@@ -127,7 +127,7 @@ button{cursor:pointer}
 }
 .tip.final{color:var(--gold);font-size:11px}
 .final-message{
-  font-family:Manrope,sans-serif;font-size:25px;font-weight:800;
+  font-family:Manrope,sans-serif;font-size:25px;font-weight:700;
   letter-spacing:-.04em;line-height:1.05;margin-bottom:9px;
   opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease
 }
@@ -165,7 +165,7 @@ button{cursor:pointer}
 }
 .form h2{margin:0 0 18px;font-family:Manrope,sans-serif;font-size:21px}
 .field{margin-bottom:12px}
-.field label{display:block;margin-bottom:5px;font-size:10px;font-weight:900;letter-spacing:.12em}
+.field label{display:block;margin-bottom:5px;font-size:10px;font-weight:600;letter-spacing:.12em}
 .field textarea,.field input{
   width:100%;border:1px solid #000;border-radius:8px;padding:10px;background:rgba(255,255,255,.94);color:#111;
   font-size:13px;font-weight:600;outline:none;resize:vertical
@@ -174,7 +174,7 @@ button{cursor:pointer}
 .actions{display:flex;gap:9px;margin-top:17px}
 .actions button{
   flex:1;border:1px solid #000;border-radius:8px;padding:10px;
-  font-size:11px;font-weight:900
+  font-size:11px;font-weight:600
 }
 .cancel{background:#fff}
 .submit{background:var(--gold)}
