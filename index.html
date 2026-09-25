@@ -70,10 +70,6 @@ button{cursor:pointer}
 .bottom{
   margin-top:auto;padding-top:18px;text-align:center
 }
-.counter{
-  font-family:Manrope,sans-serif;font-size:36px;font-weight:800;letter-spacing:-.05em;
-  line-height:1;margin-bottom:10px
-}
 .tip{
   max-width:245px;margin:0 auto;font-size:10px;line-height:1.35;
   color:var(--muted);font-weight:700
@@ -120,8 +116,119 @@ button{cursor:pointer}
   .hints{margin-top:17px;gap:7px}
   .hint{min-height:52px;padding:9px 11px}
   .bottom{padding-top:12px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <script>
+    const CONFIG = {
+      celebrity: "Celebrity Name",
+      hint1: "Started their career as a child actor.",
+      hint2: "Known for a major role in a popular film.",
+      hint3: "Has received multiple major award nominations.",
+      hint4: "Also works in television and other projects."
+    };
+  </script>
 
-  $("counter").textContent = Math.max(0, 5 - (elapsed % 5));
+  <main class="quiz" id="quiz">
+    <div class="quiz-content">
+      <header class="header">
+        <div>
+          <div class="eyebrow" id="brandEdit" role="button" tabindex="0" aria-label="Edit celebrity and hints">ZEUX TRIVIA</div>
+          <h1 class="title" id="gameTitle" role="button" tabindex="0" aria-label="Restart game"><span>GUESS</span><span>THE CELEBRITY</span></h1>
+        </div>
+        <button class="fullscreen" id="fullscreenBtn" aria-label="Enter fullscreen">⛶</button>
+      </header>
+
+      <section class="hints" id="hints">
+        <div class="hint revealed" id="hintBox1">
+          <span class="hint-number">01</span>
+          <span class="hint-copy" id="hintText1"></span>
+        </div>
+        <div class="hint locked" id="hintBox2">
+          <span class="hint-number">02</span>
+          <span class="hint-copy" id="hintText2">5</span>
+        </div>
+        <div class="hint locked" id="hintBox3">
+          <span class="hint-number">03</span>
+          <span class="hint-copy" id="hintText3">—</span>
+        </div>
+        <div class="hint locked" id="hintBox4">
+          <span class="hint-number">04</span>
+          <span class="hint-copy" id="hintText4">—</span>
+        </div>
+      </section>
+
+      <div class="bottom">
+        <div class="final-message" id="finalMessage" style="display:none">DID YOU GET IT?</div>
+        <div class="tip" id="tip">pause the video if you need more time</div>
+      </div>
+
+      <div class="edit-hint">click ZEUX TRIVIA to edit</div>
+    </div>
+  </main>
+</div>
+
+<div class="modal-backdrop" id="modal">
+  <form class="form" id="form">
+    <h2>Edit Celebrity</h2>
+    <div class="field">
+      <label for="celebrityInput">CELEBRITY (NOT SHOWN)</label>
+      <input id="celebrityInput" type="text" required>
+    </div>
+    <div class="field"><label for="hint1Input">HINT 1</label><textarea id="hint1Input" rows="2" required></textarea></div>
+    <div class="field"><label for="hint2Input">HINT 2</label><textarea id="hint2Input" rows="2" required></textarea></div>
+    <div class="field"><label for="hint3Input">HINT 3</label><textarea id="hint3Input" rows="2" required></textarea></div>
+    <div class="field"><label for="hint4Input">HINT 4</label><textarea id="hint4Input" rows="2" required></textarea></div>
+    <div class="actions">
+      <button type="button" class="cancel" id="cancelBtn">CANCEL</button>
+      <button type="submit" class="submit">SAVE</button>
+    </div>
+  </form>
+</div>
+
+<script>
+let elapsed = 0;
+let running = false;
+let timerId = null;
+let finished = false;
+
+const $ = id => document.getElementById(id);
+
+function setHint(box, text, revealed){
+  const copy = box.querySelector(".hint-copy");
+  copy.textContent = text;
+  box.classList.toggle("locked", !revealed);
+  box.classList.toggle("revealed", revealed);
+}
+
+function revealHint(number){
+  const box = $("hintBox" + number);
+  const text = CONFIG["hint" + number];
+  setHint(box, text, true);
+  box.classList.remove("reveal");
+  void box.offsetWidth;
+  box.classList.add("reveal");
+}
+
+function update(){
+  $("hintText1").textContent = CONFIG.hint1;
+
+  if(finished){
+    $("finalMessage").style.display = "block";
+    $("tip").textContent = "check first comment for answer";
+    $("tip").classList.add("final");
+    return;
+  }
+
+  $("finalMessage").style.display = "none";
+  $("tip").textContent = "pause the video if you need more time";
+  $("tip").classList.remove("final");
+
+  if(elapsed < 5) $("hintText2").textContent = String(5 - elapsed);
+  else if(elapsed < 10) $("hintText3").textContent = String(10 - elapsed);
+  else if(elapsed < 15) $("hintText4").textContent = String(15 - elapsed);
 }
 
 function tick(){
@@ -160,6 +267,7 @@ function reset(){
 
   $("tip").textContent = "pause the video if you need more time";
   $("tip").classList.remove("final");
+  $("finalMessage").style.display = "none";
   update();
 }
 
@@ -172,10 +280,35 @@ function openModal(){
   $("modal").classList.add("open");
 }
 
-$("gameTitle").onclick = event => {\n  event.stopPropagation();\n  reset();\n  start();\n};\n\n$("gameTitle").onkeydown = event => {\n  if(event.key === "Enter" || event.key === " "){\n    event.preventDefault();\n    reset();\n    start();\n  }\n};\n\n$("quiz").onclick = event => {
-  if(event.target.closest("#fullscreenBtn")) return;
+$("gameTitle").onclick = event => {
+  event.stopPropagation();
+  reset();
+  start();
+};
+
+$("gameTitle").onkeydown = event => {
+  if(event.key === "Enter" || event.key === " "){
+    event.preventDefault();
+    reset();
+    start();
+  }
+};
+
+$("brandEdit").onclick = event => {
+  event.stopPropagation();
   openModal();
 };
+
+$("brandEdit").onkeydown = event => {
+  if(event.key === "Enter" || event.key === " "){
+    event.preventDefault();
+    openModal();
+  }
+};
+
+$("quiz").addEventListener("click", event => {
+  if(event.target.closest(".hint")) start();
+});
 
 $("form").onsubmit = event => {
   event.preventDefault();
@@ -202,9 +335,6 @@ $("fullscreenBtn").onclick = async event => {
   }catch(e){ console.warn("Fullscreen unavailable:", e); }
 };
 
-$("quiz").addEventListener("click", event => {
-  if(event.target.closest(".hint")) start();
-});
 
 reset();
 </script>
