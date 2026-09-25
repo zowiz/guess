@@ -141,7 +141,7 @@ button{cursor:pointer}
       <header class="header">
         <div>
           <div class="eyebrow">ZEUX TRIVIA</div>
-          <h1 class="title"><span>GUESS</span><span>THE CELEBRITY</span></h1>
+          <h1 class="title" id="gameTitle" role="button" tabindex="0" aria-label="Restart game"><span>GUESS</span><span>THE CELEBRITY</span></h1>
         </div>
         <button class="fullscreen" id="fullscreenBtn" aria-label="Enter fullscreen">⛶</button>
       </header>
@@ -279,7 +279,7 @@ function openModal(){
   $("modal").classList.add("open");
 }
 
-$("quiz").onclick = event => {
+$("gameTitle").onclick = event => {\n  event.stopPropagation();\n  reset();\n  start();\n};\n\n$("gameTitle").onkeydown = event => {\n  if(event.key === "Enter" || event.key === " "){\n    event.preventDefault();\n    reset();\n    start();\n  }\n};\n\n$("quiz").onclick = event => {
   if(event.target.closest("#fullscreenBtn")) return;
   openModal();
 };
