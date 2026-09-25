@@ -8,15 +8,22 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@500;600;700;800;900&family=Manrope:wght@700;800&display=swap');
 
 :root{
-  --bg:#111111;
-  --card:#f4f1ea;
-  --ink:#151515;
-  --muted:#77736d;
-  --line:#d8d3ca;
-  --accent:#e9ff4f;
+  --bg:#070b2b;
+  --card:linear-gradient(145deg,#111a55 0%,#32135f 48%,#650f63 100%);
+  --ink:#ffffff;
+  --muted:#b9c2ff;
+  --line:#6f7cff;
+  --accent:#39f7ff;
+  --pink:#ff3fd8;
 }
 *{box-sizing:border-box}
-html,body{margin:0;min-height:100%;background:var(--bg);font-family:"DM Sans",system-ui,sans-serif}
+html,body{
+  margin:0;min-height:100%;font-family:"DM Sans",system-ui,sans-serif;
+  background:
+    radial-gradient(circle at 15% 15%,rgba(0,229,255,.32),transparent 34%),
+    radial-gradient(circle at 85% 85%,rgba(255,0,204,.32),transparent 38%),
+    linear-gradient(135deg,#061b5f 0%,#15105a 45%,#72005f 100%);
+}
 body{color:var(--ink)}
 button,input,textarea{font:inherit}
 button{cursor:pointer}
@@ -24,15 +31,15 @@ button{cursor:pointer}
 .app{min-height:100vh;display:grid;place-items:center;padding:18px 10px}
 .quiz{
   position:relative;width:360px;max-width:92vw;aspect-ratio:9/16;
-  overflow:hidden;background:var(--card);border:1px solid #000;
-  border-radius:18px;box-shadow:0 12px 35px rgba(0,0,0,.35)
+  overflow:hidden;background:var(--card);border:1px solid rgba(57,247,255,.7);
+  border-radius:18px;box-shadow:0 0 28px rgba(57,247,255,.18),0 0 55px rgba(255,63,216,.16)
 }
 .quiz-content{height:100%;padding:22px 20px 18px;display:flex;flex-direction:column}
 
 .header{display:flex;align-items:flex-start;justify-content:space-between}
 .eyebrow{
   font-size:10px;font-weight:900;letter-spacing:.18em;text-transform:uppercase;
-  color:var(--muted);margin-bottom:7px
+  color:var(--accent);margin-bottom:7px;text-shadow:0 0 12px rgba(57,247,255,.55)
 }
 .title{
   margin:0;font-family:Manrope,sans-serif;font-size:31px;line-height:.98;
@@ -40,10 +47,10 @@ button{cursor:pointer}
 }
 .title span{display:block}
 .fullscreen{
-  width:36px;height:36px;flex:none;border:1px solid var(--ink);border-radius:50%;
-  background:transparent;color:var(--ink);font-size:17px
+  width:36px;height:36px;flex:none;border:1px solid var(--accent);border-radius:50%;
+  background:rgba(57,247,255,.06);color:var(--accent);font-size:17px;box-shadow:0 0 12px rgba(57,247,255,.18)
 }
-.fullscreen:hover{background:var(--ink);color:var(--card)}
+.fullscreen:hover{background:var(--accent);color:#07102f}
 
 .hints{
   margin-top:25px;display:flex;flex-direction:column;gap:9px
@@ -51,15 +58,15 @@ button{cursor:pointer}
 .hint{
   min-height:58px;border:1px solid var(--ink);border-radius:9px;
   padding:11px 13px;display:flex;align-items:center;gap:12px;
-  background:rgba(255,255,255,.34);transition:background .25s,transform .25s
+  background:rgba(255,255,255,.055);border-color:rgba(255,255,255,.32);transition:background .25s,transform .25s
 }
-.hint.revealed{background:#fff;border-color:var(--ink)}
+.hint.revealed{background:rgba(57,247,255,.09);border-color:var(--accent);box-shadow:inset 0 0 18px rgba(57,247,255,.06),0 0 12px rgba(57,247,255,.1)}
 .hint-number{
   width:25px;height:25px;display:grid;place-items:center;flex:none;
-  border:1px solid var(--ink);border-radius:50%;font-size:10px;font-weight:900
+  border:1px solid var(--accent);border-radius:50%;font-size:10px;font-weight:900;color:var(--accent)
 }
 .hint-copy{min-width:0;font-size:12px;line-height:1.28;font-weight:700}
-.hint.locked .hint-number{background:var(--ink);color:var(--card)}
+.hint.locked .hint-number{background:var(--accent);color:#07102f;box-shadow:0 0 10px rgba(57,247,255,.35)}
 .hint.locked .hint-copy{font-family:Manrope,sans-serif;font-size:18px;letter-spacing:.02em}
 .hint.reveal{animation:reveal .5s cubic-bezier(.2,.8,.2,1) both}
 @keyframes reveal{
@@ -74,14 +81,14 @@ button{cursor:pointer}
   max-width:245px;margin:0 auto;font-size:10px;line-height:1.35;
   color:var(--muted);font-weight:700
 }
-.tip.final{color:var(--ink);font-size:11px}
+.tip.final{color:var(--accent);font-size:11px;text-shadow:0 0 10px rgba(57,247,255,.4)}
 .final-message{
   font-family:Manrope,sans-serif;font-size:25px;font-weight:800;
   letter-spacing:-.04em;line-height:1.05;margin-bottom:9px;
   opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease
 }
 .final-message.show{
-  opacity:1;transform:translateY(0)
+  opacity:1;transform:translateY(0);color:#fff;text-shadow:0 0 18px rgba(255,63,216,.75),0 0 30px rgba(57,247,255,.35)
 }
 
 .edit-hint{
@@ -95,14 +102,14 @@ button{cursor:pointer}
 }
 .modal-backdrop.open{display:flex}
 .form{
-  width:min(420px,100%);max-height:90vh;overflow:auto;background:#f4f1ea;
-  border:1px solid #000;border-radius:16px;padding:20px;box-shadow:0 12px 35px rgba(0,0,0,.35)
+  width:min(420px,100%);max-height:90vh;overflow:auto;background:linear-gradient(145deg,#111a55,#32135f 48%,#650f63);
+  border:1px solid rgba(57,247,255,.65);border-radius:16px;padding:20px;box-shadow:0 12px 35px rgba(0,0,0,.35)
 }
 .form h2{margin:0 0 18px;font-family:Manrope,sans-serif;font-size:21px}
 .field{margin-bottom:12px}
 .field label{display:block;margin-bottom:5px;font-size:10px;font-weight:900;letter-spacing:.12em}
 .field textarea,.field input{
-  width:100%;border:1px solid #000;border-radius:8px;padding:10px;background:#fff;
+  width:100%;border:1px solid #000;border-radius:8px;padding:10px;background:rgba(255,255,255,.94);color:#111;
   font-size:13px;font-weight:600;outline:none;resize:vertical
 }
 .field textarea:focus,.field input:focus{box-shadow:inset 0 0 0 2px var(--accent)}
@@ -112,7 +119,7 @@ button{cursor:pointer}
   font-size:11px;font-weight:900
 }
 .cancel{background:#fff}
-.submit{background:var(--accent)}
+.submit{background:linear-gradient(90deg,var(--accent),var(--pink));color:#07102f;box-shadow:0 0 16px rgba(57,247,255,.25)}
 
 @media(max-height:700px){
   .quiz-content{padding-top:17px;padding-bottom:14px}
