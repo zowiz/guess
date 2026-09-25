@@ -136,9 +136,18 @@ button{cursor:pointer}
   opacity:1;transform:translateY(0);color:#fff;
   animation:slideUpFinal .6s cubic-bezier(.2,.8,.2,1) both
 }
+.final-message.flip{
+  animation:flipFinal .7s ease both
+}
 @keyframes slideUpFinal{
   from{opacity:0;transform:translateY(28px)}
   to{opacity:1;transform:translateY(0)}
+}
+@keyframes flipFinal{
+  0%{opacity:1;transform:perspective(500px) rotateX(0)}
+  45%{opacity:0;transform:perspective(500px) rotateX(-90deg)}
+  55%{opacity:0;transform:perspective(500px) rotateX(90deg)}
+  100%{opacity:1;transform:perspective(500px) rotateX(0)}
 }
 
 .edit-hint{
@@ -257,6 +266,7 @@ let running = false;
 let timerId = null;
 let finished = false;
 let finalTimerId = null;
+let finalStageTimerId = null;
 
 const $ = id => document.getElementById(id);
 
@@ -307,6 +317,20 @@ function tick(){
     finalTimerId = setTimeout(() => {
       finished = true;
       update();
+
+      finalStageTimerId = setTimeout(() => {
+        const message = $("finalMessage");
+        message.classList.remove("show");
+        message.classList.add("flip");
+        message.textContent = "How many hints it took?";
+
+        finalStageTimerId = setTimeout(() => {
+          message.classList.remove("flip");
+          void message.offsetWidth;
+          message.classList.add("flip");
+          message.textContent = "Let me know in Comments";
+        }, 3000);
+      }, 3000);
     }, 2000);
   }
 
@@ -328,6 +352,7 @@ function start(){
 function reset(){
   clearInterval(timerId);
   clearTimeout(finalTimerId);
+  clearTimeout(finalStageTimerId);
   elapsed = 0;
   running = false;
   finished = false;
@@ -340,7 +365,8 @@ function reset(){
   $("tip").textContent = "pause the video if you need more time";
   $("tip").classList.remove("final");
   $("finalMessage").style.display = "none";
-  $("finalMessage").classList.remove("show");
+  $("finalMessage").classList.remove("show","flip");
+  $("finalMessage").textContent = "DID YOU GET IT?";
   update();
 }
 
