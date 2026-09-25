@@ -70,6 +70,9 @@ button{cursor:pointer}
   background:linear-gradient(145deg,#1f7a4d 0%,#17613e 55%,#0d472f 100%);
   border:2px solid var(--gold)
 }
+.hint.revealed .hint-number{
+  background:var(--white);color:var(--green);border-color:transparent
+}
 .hint-number{
   width:25px;height:25px;display:grid;place-items:center;flex:none;
   border:1px solid var(--gold);border-radius:50%;font-size:10px;font-weight:900;color:var(--gold)
@@ -172,11 +175,11 @@ button{cursor:pointer}
         </div>
         <div class="hint locked" id="hintBox3">
           <span class="hint-number">03</span>
-          <span class="hint-copy" id="hintText3">—</span>
+          <span class="hint-copy" id="hintText3"></span>
         </div>
         <div class="hint locked" id="hintBox4">
           <span class="hint-number">04</span>
-          <span class="hint-copy" id="hintText4">—</span>
+          <span class="hint-copy" id="hintText4"></span>
         </div>
       </section>
 
@@ -291,8 +294,8 @@ function reset(){
 
   setHint($("hintBox1"), CONFIG.hint1, true);
   setHint($("hintBox2"), "5", false);
-  setHint($("hintBox3"), "—", false);
-  setHint($("hintBox4"), "—", false);
+  setHint($("hintBox3"), "", false);
+  setHint($("hintBox4"), "", false);
 
   $("tip").textContent = "pause the video if you need more time";
   $("tip").classList.remove("final");
