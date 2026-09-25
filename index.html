@@ -28,8 +28,28 @@ button{cursor:pointer}
 .app{min-height:100vh;display:grid;place-items:center;padding:18px 10px}
 .quiz{
   position:relative;width:360px;max-width:92vw;aspect-ratio:9/16;
-  overflow:hidden;background:var(--blue);border:1px solid var(--gold);
-  border-radius:18px
+  overflow:hidden;background:var(--blue);border:3px solid transparent;
+  border-radius:18px;
+  background-image:linear-gradient(var(--blue),var(--blue)),linear-gradient(90deg,var(--gold),var(--gold));
+  background-origin:border-box;background-clip:padding-box,border-box;
+  animation:borderFill 20s linear forwards
+}
+@keyframes borderFill{
+  0%{
+    background-image:linear-gradient(var(--blue),var(--blue)),linear-gradient(90deg,var(--gold) 0%,transparent 0%,transparent 100%)
+  }
+  25%{
+    background-image:linear-gradient(var(--blue),var(--blue)),linear-gradient(90deg,var(--gold) 0%,var(--gold) 25%,transparent 25%,transparent 100%)
+  }
+  50%{
+    background-image:linear-gradient(var(--blue),var(--blue)),linear-gradient(90deg,var(--gold) 0%,var(--gold) 50%,transparent 50%,transparent 100%)
+  }
+  75%{
+    background-image:linear-gradient(var(--blue),var(--blue)),linear-gradient(90deg,var(--gold) 0%,var(--gold) 75%,transparent 75%,transparent 100%)
+  }
+  100%{
+    background-image:linear-gradient(var(--blue),var(--blue)),linear-gradient(90deg,var(--gold) 0%,var(--gold) 100%)
+  }
 }
 .quiz-content{height:100%;padding:22px 20px 18px;display:flex;flex-direction:column}
 
@@ -126,7 +146,7 @@ button{cursor:pointer}
   max-width:245px;margin:0 auto;font-size:10px;line-height:1.35;
   color:var(--white);font-weight:700
 }
-.tip.final{color:var(--gold);font-size:11px}
+.tip.final{color:var(--gold);font-size:13px}
 .final-message{
   font-family:Manrope,sans-serif;font-size:25px;font-weight:700;
   letter-spacing:-.04em;line-height:1.05;margin-bottom:9px;
@@ -349,6 +369,10 @@ function reset(){
   elapsed = 0;
   running = false;
   finished = false;
+
+  $("quiz").style.animation = "none";
+  void $("quiz").offsetWidth;
+  $("quiz").style.animation = "borderFill 20s linear forwards";
 
   setHint($("hintBox1"), CONFIG.hint1, true);
   setHint($("hintBox2"), "revealing hint in 5", false);
