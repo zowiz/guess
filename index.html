@@ -71,19 +71,20 @@ button{cursor:pointer}
   border:2px solid var(--gold)
 }
 .hint.revealed .hint-number{
-  background:var(--white);color:var(--green);border-color:transparent
+  background:var(--gold);color:var(--white)
 }
 .hint-number{
   width:25px;height:25px;display:grid;place-items:center;flex:none;
-  border:1px solid var(--gold);border-radius:50%;font-size:10px;font-weight:900;color:var(--gold)
+  border:none;border-radius:50%;font-size:10px;font-weight:900;
+  background:var(--gold);color:var(--white)
 }
 .hint-copy{min-width:0;font-size:12px;line-height:1.28;font-weight:700}
-.hint.locked .hint-number{background:var(--gold);color:var(--blue)}
 .hint.locked .hint-copy{font-family:Manrope,sans-serif;font-size:18px;letter-spacing:.02em}
-.hint.reveal{animation:reveal .5s cubic-bezier(.2,.8,.2,1) both}
-@keyframes reveal{
-  from{opacity:.2;transform:translateY(7px)}
-  to{opacity:1;transform:translateY(0)}
+.hint.reveal{animation:flipReveal .65s ease both;transform-origin:center}
+@keyframes flipReveal{
+  0%{opacity:.45;transform:perspective(500px) rotateX(-90deg)}
+  55%{opacity:1;transform:perspective(500px) rotateX(12deg)}
+  100%{opacity:1;transform:perspective(500px) rotateX(0)}
 }
 
 .bottom{
