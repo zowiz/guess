@@ -120,112 +120,6 @@ button{cursor:pointer}
   .hints{margin-top:17px;gap:7px}
   .hint{min-height:52px;padding:9px 11px}
   .bottom{padding-top:12px}
-  .counter{font-size:31px}
-}
-</style>
-</head>
-<body>
-<div class="app">
-  <script>
-    const CONFIG = {
-      celebrity: "Celebrity Name",
-      hint1: "Started their career as a child actor.",
-      hint2: "Known for a major role in a popular film.",
-      hint3: "Has received multiple major award nominations.",
-      hint4: "Also works in television and other projects."
-    };
-  </script>
-
-  <main class="quiz" id="quiz">
-    <div class="quiz-content">
-      <header class="header">
-        <div>
-          <div class="eyebrow">ZEUX TRIVIA</div>
-          <h1 class="title" id="gameTitle" role="button" tabindex="0" aria-label="Restart game"><span>GUESS</span><span>THE CELEBRITY</span></h1>
-        </div>
-        <button class="fullscreen" id="fullscreenBtn" aria-label="Enter fullscreen">⛶</button>
-      </header>
-
-      <section class="hints" id="hints">
-        <div class="hint revealed" id="hintBox1">
-          <span class="hint-number">01</span>
-          <span class="hint-copy" id="hintText1"></span>
-        </div>
-        <div class="hint locked" id="hintBox2">
-          <span class="hint-number">02</span>
-          <span class="hint-copy" id="hintText2">5</span>
-        </div>
-        <div class="hint locked" id="hintBox3">
-          <span class="hint-number">03</span>
-          <span class="hint-copy" id="hintText3">—</span>
-        </div>
-        <div class="hint locked" id="hintBox4">
-          <span class="hint-number">04</span>
-          <span class="hint-copy" id="hintText4">—</span>
-        </div>
-      </section>
-
-      <div class="bottom">
-        <div class="counter" id="counter">5</div>
-        <div class="tip" id="tip">pause the video if you need more time</div>
-      </div>
-
-      <div class="edit-hint">click the card to edit</div>
-    </div>
-  </main>
-</div>
-
-<div class="modal-backdrop" id="modal">
-  <form class="form" id="form">
-    <h2>Edit Celebrity</h2>
-    <div class="field">
-      <label for="celebrityInput">CELEBRITY (NOT SHOWN)</label>
-      <input id="celebrityInput" type="text" required>
-    </div>
-    <div class="field"><label for="hint1Input">HINT 1</label><textarea id="hint1Input" rows="2" required></textarea></div>
-    <div class="field"><label for="hint2Input">HINT 2</label><textarea id="hint2Input" rows="2" required></textarea></div>
-    <div class="field"><label for="hint3Input">HINT 3</label><textarea id="hint3Input" rows="2" required></textarea></div>
-    <div class="field"><label for="hint4Input">HINT 4</label><textarea id="hint4Input" rows="2" required></textarea></div>
-    <div class="actions">
-      <button type="button" class="cancel" id="cancelBtn">CANCEL</button>
-      <button type="submit" class="submit">SAVE</button>
-    </div>
-  </form>
-</div>
-
-<script>
-let elapsed = 0;
-let running = false;
-let timerId = null;
-let finished = false;
-
-const $ = id => document.getElementById(id);
-
-function setHint(box, text, revealed){
-  const copy = box.querySelector(".hint-copy");
-  copy.textContent = text;
-  box.classList.toggle("locked", !revealed);
-  box.classList.toggle("revealed", revealed);
-}
-
-function revealHint(number){
-  const box = $("hintBox" + number);
-  const text = CONFIG["hint" + number];
-  setHint(box, text, true);
-  box.classList.remove("reveal");
-  void box.offsetWidth;
-  box.classList.add("reveal");
-}
-
-function update(){
-  $("hintText1").textContent = CONFIG.hint1;
-
-  if(finished){
-    $("counter").style.display = "none";
-    $("tip").textContent = "check first comment for answer";
-    $("tip").classList.add("final");
-    return;
-  }
 
   $("counter").textContent = Math.max(0, 5 - (elapsed % 5));
 }
@@ -264,7 +158,6 @@ function reset(){
   setHint($("hintBox3"), "—", false);
   setHint($("hintBox4"), "—", false);
 
-  $("counter").style.display = "block";
   $("tip").textContent = "pause the video if you need more time";
   $("tip").classList.remove("final");
   update();
