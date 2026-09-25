@@ -68,7 +68,7 @@ button{cursor:pointer}
 }
 
 .bottom{
-  margin-top:auto;padding-top:18px;text-align:center
+  margin-top:16px;text-align:center
 }
 .tip{
   max-width:245px;margin:0 auto;font-size:10px;line-height:1.35;
@@ -77,7 +77,11 @@ button{cursor:pointer}
 .tip.final{color:var(--ink);font-size:11px}
 .final-message{
   font-family:Manrope,sans-serif;font-size:25px;font-weight:800;
-  letter-spacing:-.04em;line-height:1.05;margin-bottom:9px
+  letter-spacing:-.04em;line-height:1.05;margin-bottom:9px;
+  opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease
+}
+.final-message.show{
+  opacity:1;transform:translateY(0)
 }
 
 .edit-hint{
@@ -193,6 +197,7 @@ let elapsed = 0;
 let running = false;
 let timerId = null;
 let finished = false;
+let finalTimerId = null;
 
 const $ = id => document.getElementById(id);
 
@@ -217,6 +222,7 @@ function update(){
 
   if(finished){
     $("finalMessage").style.display = "block";
+    $("finalMessage").classList.add("show");
     $("tip").textContent = "check first comment for answer";
     $("tip").classList.add("final");
     return;
@@ -236,10 +242,16 @@ function tick(){
 
   if(elapsed === 5) revealHint(2);
   if(elapsed === 10) revealHint(3);
-  if(elapsed === 15) revealHint(4);
+  if(elapsed === 15){
+    revealHint(4);
+    clearTimeout(finalTimerId);
+    finalTimerId = setTimeout(() => {
+      finished = true;
+      update();
+    }, 2000);
+  }
 
-  if(elapsed >= 20){
-    finished = true;
+  if(elapsed >= 15){
     running = false;
     clearInterval(timerId);
   }
@@ -256,6 +268,7 @@ function start(){
 
 function reset(){
   clearInterval(timerId);
+  clearTimeout(finalTimerId);
   elapsed = 0;
   running = false;
   finished = false;
@@ -268,6 +281,7 @@ function reset(){
   $("tip").textContent = "pause the video if you need more time";
   $("tip").classList.remove("final");
   $("finalMessage").style.display = "none";
+  $("finalMessage").classList.remove("show");
   update();
 }
 
