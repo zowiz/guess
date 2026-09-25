@@ -32,6 +32,27 @@ button{cursor:pointer}
 }
 .quiz-content{height:100%;padding:22px 20px 18px;display:flex;flex-direction:column}
 
+.floating-emojis{
+  position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0
+}
+.floating-emojis span{
+  position:absolute;font-size:18px;opacity:.16;user-select:none;
+  animation:floatEmoji 9s ease-in-out infinite
+}
+.floating-emojis span:nth-child(1){left:8%;top:18%;animation-delay:-1s;animation-duration:10s}
+.floating-emojis span:nth-child(2){left:78%;top:12%;animation-delay:-4s;animation-duration:12s}
+.floating-emojis span:nth-child(3){left:20%;top:48%;animation-delay:-6s;animation-duration:11s}
+.floating-emojis span:nth-child(4){left:84%;top:42%;animation-delay:-2s;animation-duration:10s}
+.floating-emojis span:nth-child(5){left:10%;top:72%;animation-delay:-5s;animation-duration:13s}
+.floating-emojis span:nth-child(6){left:72%;top:68%;animation-delay:-7s;animation-duration:11s}
+.floating-emojis span:nth-child(7){left:45%;top:88%;animation-delay:-3s;animation-duration:12s}
+.floating-emojis span:nth-child(8){left:48%;top:25%;animation-delay:-8s;animation-duration:14s}
+@keyframes floatEmoji{
+  0%,100%{transform:translate3d(0,0,0) rotate(-5deg)}
+  50%{transform:translate3d(10px,-16px,0) rotate(5deg)}
+}
+.quiz-content{position:relative;z-index:1}
+
 .header{display:flex;align-items:flex-start;justify-content:space-between}
 .eyebrow{
   display:inline-flex;align-items:center;gap:5px;
@@ -161,6 +182,9 @@ button{cursor:pointer}
   </script>
 
   <main class="quiz" id="quiz">
+    <div class="floating-emojis" aria-hidden="true">
+      <span>⭐</span><span>🎬</span><span>✨</span><span>🎭</span><span>🏆</span><span>🎤</span><span>🌟</span><span>🎥</span>
+    </div>
     <div class="quiz-content">
       <header class="header">
         <div>
@@ -177,7 +201,7 @@ button{cursor:pointer}
         </div>
         <div class="hint locked" id="hintBox2">
           <span class="hint-number">02</span>
-          <span class="hint-copy" id="hintText2">5</span>
+          <span class="hint-copy" id="hintText2">revealing hint in 5</span>
         </div>
         <div class="hint locked" id="hintBox3">
           <span class="hint-number">03</span>
@@ -257,9 +281,9 @@ function update(){
   $("tip").textContent = "pause the video if you need more time";
   $("tip").classList.remove("final");
 
-  if(elapsed < 5) $("hintText2").textContent = String(5 - elapsed);
-  else if(elapsed < 10) $("hintText3").textContent = String(10 - elapsed);
-  else if(elapsed < 15) $("hintText4").textContent = String(15 - elapsed);
+  if(elapsed < 5) $("hintText2").textContent = "revealing hint in " + (5 - elapsed);
+  else if(elapsed < 10) $("hintText3").textContent = "revealing hint in " + (10 - elapsed);
+  else if(elapsed < 15) $("hintText4").textContent = "revealing hint in " + (15 - elapsed);
 }
 
 function tick(){
@@ -299,7 +323,7 @@ function reset(){
   finished = false;
 
   setHint($("hintBox1"), CONFIG.hint1, true);
-  setHint($("hintBox2"), "5", false);
+  setHint($("hintBox2"), "revealing hint in 5", false);
   setHint($("hintBox3"), "", false);
   setHint($("hintBox4"), "", false);
 
