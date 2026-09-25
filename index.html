@@ -100,7 +100,12 @@ button{cursor:pointer}
   opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease
 }
 .final-message.show{
-  opacity:1;transform:translateY(0);color:#fff
+  opacity:1;transform:translateY(0);color:#fff;
+  animation:slideUpFinal .6s cubic-bezier(.2,.8,.2,1) both
+}
+@keyframes slideUpFinal{
+  from{opacity:0;transform:translateY(28px)}
+  to{opacity:1;transform:translateY(0)}
 }
 
 .edit-hint{
