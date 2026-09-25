@@ -50,6 +50,8 @@ button{cursor:pointer}
   mask-composite:exclude;
   pointer-events:none;
   z-index:2;
+}
+.quiz.border-running::before{
   animation:borderFill 20s linear forwards;
 }
 @keyframes borderFill{
@@ -363,11 +365,11 @@ function tick(){
 function start(){
   if(running || finished) return;
   running = true;
+  $("quiz").classList.remove("border-running");
+  $("quiz").classList.remove("border-running");
   $("quiz").style.setProperty("--border-progress","0%");
   void $("quiz").offsetWidth;
-  $("quiz").style.setProperty("animation","none");
-  void $("quiz").offsetWidth;
-  $("quiz").style.setProperty("animation","borderFill 20s linear forwards");
+  $("quiz").classList.add("border-running");
   update();
   timerId = setInterval(tick, 1000);
 }
