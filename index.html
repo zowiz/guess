@@ -52,11 +52,15 @@ button{cursor:pointer}
   margin-top:25px;display:flex;flex-direction:column;gap:9px
 }
 .hint{
-  min-height:58px;border:1px solid var(--ink);border-radius:9px;
+  min-height:58px;border:2px solid var(--gold);border-radius:9px;
   padding:11px 13px;display:flex;align-items:center;gap:12px;
-  background:var(--card-blue);border-color:var(--gold);transition:background .25s,transform .25s
+  background:linear-gradient(145deg,#0a255f 0%,#123b8f 55%,#071b4a 100%);
+  transition:background .25s,transform .25s
 }
-.hint.revealed{background:var(--green);border-color:var(--gold)}
+.hint.revealed{
+  background:linear-gradient(145deg,#1f7a4d 0%,#17613e 55%,#0d472f 100%);
+  border:2px solid var(--gold)
+}
 .hint-number{
   width:25px;height:25px;display:grid;place-items:center;flex:none;
   border:1px solid var(--gold);border-radius:50%;font-size:10px;font-weight:900;color:var(--gold)
