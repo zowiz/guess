@@ -32,14 +32,14 @@ button{cursor:pointer}
 .quiz{
   position:relative;width:360px;max-width:92vw;aspect-ratio:9/16;
   overflow:hidden;background:var(--card);border:1px solid rgba(57,247,255,.7);
-  border-radius:18px;box-shadow:0 0 28px rgba(57,247,255,.18),0 0 55px rgba(255,63,216,.16)
+  border-radius:18px
 }
 .quiz-content{height:100%;padding:22px 20px 18px;display:flex;flex-direction:column}
 
 .header{display:flex;align-items:flex-start;justify-content:space-between}
 .eyebrow{
   font-size:10px;font-weight:900;letter-spacing:.18em;text-transform:uppercase;
-  color:var(--accent);margin-bottom:7px;text-shadow:0 0 12px rgba(57,247,255,.55)
+  color:var(--accent);margin-bottom:7px
 }
 .title{
   margin:0;font-family:Manrope,sans-serif;font-size:31px;line-height:.98;
@@ -48,7 +48,7 @@ button{cursor:pointer}
 .title span{display:block}
 .fullscreen{
   width:36px;height:36px;flex:none;border:1px solid var(--accent);border-radius:50%;
-  background:rgba(57,247,255,.06);color:var(--accent);font-size:17px;box-shadow:0 0 12px rgba(57,247,255,.18)
+  background:rgba(57,247,255,.06);color:var(--accent);font-size:17px
 }
 .fullscreen:hover{background:var(--accent);color:#07102f}
 
@@ -60,13 +60,13 @@ button{cursor:pointer}
   padding:11px 13px;display:flex;align-items:center;gap:12px;
   background:rgba(255,255,255,.055);border-color:rgba(255,255,255,.32);transition:background .25s,transform .25s
 }
-.hint.revealed{background:rgba(57,247,255,.09);border-color:var(--accent);box-shadow:inset 0 0 18px rgba(57,247,255,.06),0 0 12px rgba(57,247,255,.1)}
+.hint.revealed{background:rgba(57,247,255,.09);border-color:var(--accent)}
 .hint-number{
   width:25px;height:25px;display:grid;place-items:center;flex:none;
   border:1px solid var(--accent);border-radius:50%;font-size:10px;font-weight:900;color:var(--accent)
 }
 .hint-copy{min-width:0;font-size:12px;line-height:1.28;font-weight:700}
-.hint.locked .hint-number{background:var(--accent);color:#07102f;box-shadow:0 0 10px rgba(57,247,255,.35)}
+.hint.locked .hint-number{background:var(--accent);color:#07102f}
 .hint.locked .hint-copy{font-family:Manrope,sans-serif;font-size:18px;letter-spacing:.02em}
 .hint.reveal{animation:reveal .5s cubic-bezier(.2,.8,.2,1) both}
 @keyframes reveal{
@@ -81,14 +81,14 @@ button{cursor:pointer}
   max-width:245px;margin:0 auto;font-size:10px;line-height:1.35;
   color:var(--muted);font-weight:700
 }
-.tip.final{color:var(--accent);font-size:11px;text-shadow:0 0 10px rgba(57,247,255,.4)}
+.tip.final{color:var(--accent);font-size:11px}
 .final-message{
   font-family:Manrope,sans-serif;font-size:25px;font-weight:800;
   letter-spacing:-.04em;line-height:1.05;margin-bottom:9px;
   opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease
 }
 .final-message.show{
-  opacity:1;transform:translateY(0);color:#fff;text-shadow:0 0 18px rgba(255,63,216,.75),0 0 30px rgba(57,247,255,.35)
+  opacity:1;transform:translateY(0);color:#fff
 }
 
 .edit-hint{
@@ -119,7 +119,7 @@ button{cursor:pointer}
   font-size:11px;font-weight:900
 }
 .cancel{background:#fff}
-.submit{background:linear-gradient(90deg,var(--accent),var(--pink));color:#07102f;box-shadow:0 0 16px rgba(57,247,255,.25)}
+.submit{background:linear-gradient(90deg,var(--accent),var(--pink))}
 
 @media(max-height:700px){
   .quiz-content{padding-top:17px;padding-bottom:14px}
