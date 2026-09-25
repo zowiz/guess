@@ -363,6 +363,11 @@ function tick(){
 function start(){
   if(running || finished) return;
   running = true;
+  $("quiz").style.setProperty("--border-progress","0%");
+  void $("quiz").offsetWidth;
+  $("quiz").style.setProperty("animation","none");
+  void $("quiz").offsetWidth;
+  $("quiz").style.setProperty("animation","borderFill 20s linear forwards");
   update();
   timerId = setInterval(tick, 1000);
 }
@@ -375,8 +380,6 @@ function reset(){
   running = false;
   finished = false;
 
-  $("quiz").style.setProperty("--border-progress","0%");
-  void $("quiz").offsetWidth;
   $("quiz").style.setProperty("--border-progress","0%");
 
   setHint($("hintBox1"), CONFIG.hint1, true);
