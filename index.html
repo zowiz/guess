@@ -26,30 +26,35 @@ button,input,textarea{font:inherit}
 button{cursor:pointer}
 
 .app{min-height:100vh;display:grid;place-items:center;padding:18px 10px}
+@property --border-progress{
+  syntax:"<percentage>";
+  inherits:false;
+  initial-value:0%
+}
 .quiz{
   position:relative;width:360px;max-width:92vw;aspect-ratio:9/16;
   overflow:hidden;background:var(--blue);border:3px solid transparent;
   border-radius:18px;
-  background-image:linear-gradient(var(--blue),var(--blue)),linear-gradient(90deg,var(--gold),var(--gold));
-  background-origin:border-box;background-clip:padding-box,border-box;
-  animation:borderFill 20s linear forwards
+  isolation:isolate;
+  --border-progress:0%;
+}
+.quiz::before{
+  content:"";
+  position:absolute;inset:0;
+  border-radius:inherit;
+  padding:3px;
+  background:conic-gradient(from -90deg,var(--gold) 0%,var(--gold) var(--border-progress),transparent var(--border-progress),transparent 100%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;
+  mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  mask-composite:exclude;
+  pointer-events:none;
+  z-index:2;
+  animation:borderFill 20s linear forwards;
 }
 @keyframes borderFill{
-  0%{
-    background-image:linear-gradient(var(--blue),var(--blue)),linear-gradient(90deg,var(--gold) 0%,transparent 0%,transparent 100%)
-  }
-  25%{
-    background-image:linear-gradient(var(--blue),var(--blue)),linear-gradient(90deg,var(--gold) 0%,var(--gold) 25%,transparent 25%,transparent 100%)
-  }
-  50%{
-    background-image:linear-gradient(var(--blue),var(--blue)),linear-gradient(90deg,var(--gold) 0%,var(--gold) 50%,transparent 50%,transparent 100%)
-  }
-  75%{
-    background-image:linear-gradient(var(--blue),var(--blue)),linear-gradient(90deg,var(--gold) 0%,var(--gold) 75%,transparent 75%,transparent 100%)
-  }
-  100%{
-    background-image:linear-gradient(var(--blue),var(--blue)),linear-gradient(90deg,var(--gold) 0%,var(--gold) 100%)
-  }
+  from{--border-progress:0%}
+  to{--border-progress:100%}
 }
 .quiz-content{height:100%;padding:22px 20px 18px;display:flex;flex-direction:column}
 
@@ -370,9 +375,9 @@ function reset(){
   running = false;
   finished = false;
 
-  $("quiz").style.animation = "none";
+  $("quiz").style.setProperty("--border-progress","0%");
   void $("quiz").offsetWidth;
-  $("quiz").style.animation = "borderFill 20s linear forwards";
+  $("quiz").style.setProperty("--border-progress","0%");
 
   setHint($("hintBox1"), CONFIG.hint1, true);
   setHint($("hintBox2"), "revealing hint in 5", false);
