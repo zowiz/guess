@@ -49,16 +49,22 @@ button,input,textarea{font:inherit}button{cursor:pointer}
 .final-message.flip{animation:flipFinal .7s ease both}
 @keyframes slideUpFinal{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
 @keyframes flipFinal{0%{opacity:1;transform:perspective(500px) rotateX(0)}45%{opacity:0;transform:perspective(500px) rotateX(-90deg)}55%{opacity:0;transform:perspective(500px) rotateX(90deg)}100%{opacity:1;transform:perspective(500px) rotateX(0)}}
-.engagement-text{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:18px;line-height:1.2;font-weight:600;margin-top:12px;margin-bottom:6px;color:var(--white)}
-.engagement-text span{display:inline-block;padding:5px 10px;border-radius:999px;background:linear-gradient(135deg,#f7e08a 0%,#d8ad3d 45%,#9b7217 100%);color:#123b8f;text-shadow:none}
-.quiz.intro .title,.quiz.intro .hints,.quiz.intro .engagement-text{opacity:0;visibility:hidden}
+.engagement-text{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:18px;line-height:1.2;font-weight:600;margin-top:12px;margin-bottom:6px;color:var(--white);opacity:0;visibility:hidden}
+.engagement-text span{display:inline-block;padding:5px 10px;border-radius:999px;background:linear-gradient(135deg,#f7e08a 0%,#d8ad3d 45%,#9b7217 100%);color:#123b8f;text-shadow:none;opacity:0;transform:translateY(8px)}
+.engagement-text.show{visibility:visible;animation:engagementShow .01s forwards}
+.engagement-text.show span{animation:engagementWord .4s cubic-bezier(.2,.8,.2,1) forwards}
+.engagement-text.show span:nth-child(1){animation-delay:0s}
+.engagement-text.show span:nth-child(2){animation-delay:.28s}
+.engagement-text.show span:nth-child(3){animation-delay:.56s}
+@keyframes engagementShow{to{opacity:1}}
+@keyframes engagementWord{from{opacity:0;transform:translateY(8px) scale(.92)}to{opacity:1;transform:translateY(0) scale(1)}}
+.quiz.intro .title,.quiz.intro .hints{opacity:0;visibility:hidden}
 .tip{opacity:0;visibility:hidden}
 .tip.final .tip-hand{display:inline-block;animation:tipHandSlide 1s ease-in-out infinite}
 @keyframes tipHandSlide{0%,100%{transform:translateX(0)}50%{transform:translateX(6px)}}
-.quiz.intro.playing .title,.quiz.intro.playing .hints,.quiz.intro.playing .engagement-text,.quiz.intro.playing .tip{visibility:visible}
+.quiz.intro.playing .title,.quiz.intro.playing .hints,.quiz.intro.playing .tip{visibility:visible}
 .quiz.intro.playing .title{animation:introHeader .7s cubic-bezier(.2,.8,.2,1) forwards}
 .quiz.intro.playing .hints{animation:introHints .55s ease .45s forwards}
-.quiz.intro.playing .engagement-text{animation:introTip .45s ease 1.12s forwards}
 .quiz.intro.playing .hint{opacity:0;animation:introHint .45s ease forwards}
 .quiz.intro.playing .hint:nth-child(1){animation-delay:.55s}.quiz.intro.playing .hint:nth-child(2){animation-delay:.68s}.quiz.intro.playing .hint:nth-child(3){animation-delay:.81s}.quiz.intro.playing .hint:nth-child(4){animation-delay:.94s}
 .quiz.intro.playing .tip{animation:introTip .45s ease 1.12s forwards}
@@ -109,7 +115,7 @@ const CONFIG={celebrity:"Celebrity Name",hint1:"Started their career as a child 
 <div class="actions"><button type="button" class="cancel" id="cancelBtn">CANCEL</button><button type="submit" class="submit">SAVE</button></div>
 </form></div>
 <script>
-let elapsed=0,running=false,timerId=null,finished=false,finalTimerId=null,finalStageTimerId=null,starterTimerId=null;
+let elapsed=0,running=false,timerId=null,finished=false,finalTimerId=null,finalStageTimerId=null,starterTimerId=null,engagementTimerId=null;
 const $=id=>document.getElementById(id);
 let audioCtx=null;
 function initAudio(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==="suspended")audioCtx.resume()}
@@ -121,12 +127,12 @@ function soundFinish(){tone(523,.1,"sine",.075);tone(659,.1,"sine",.08,.1);tone(
 function setHint(box,text,revealed){const copy=box.querySelector(".hint-copy");copy.textContent=text;box.classList.toggle("locked",!revealed);box.classList.toggle("revealed",revealed)}
 function revealHint(number){const box=$("hintBox"+number),text=CONFIG["hint"+number];setHint(box,text,true);box.classList.remove("reveal");void box.offsetWidth;box.classList.add("reveal");soundStart()}
 
-function update(){$("hintText1").textContent=CONFIG.hint1;if(finished){$("finalMessage").style.display="block";$("finalMessage").classList.add("show");$("tip").innerHTML='Check first comment for answer <span class="tip-hand">👉</span>';$("tip").classList.add("final");return}$("finalMessage").style.display="none";$("tip").textContent="💡 Pause the video if you need more time";$("tip").classList.remove("final");if(elapsed<5)$("hintText2").textContent="🤔 ".repeat(5-elapsed).trim();else if(elapsed<10)$("hintText3").textContent="🤔 ".repeat(10-elapsed).trim();else if(elapsed<15)$("hintText4").textContent="🤔 ".repeat(15-elapsed).trim()}
+function update(){$("hintText1").textContent=CONFIG.hint1;if(finished){$("finalMessage").style.display="block";$("finalMessage").classList.add("show");$("tip").innerHTML='Check first comment for answer <span class="tip-hand">👉</span>';$("tip").classList.add("final");clearTimeout(engagementTimerId);engagementTimerId=setTimeout(()=>{$("engagementText").classList.add("show")},700);return}$("finalMessage").style.display="none";$("tip").textContent="💡 Pause the video if you need more time";$("tip").classList.remove("final");if(elapsed<5)$("hintText2").textContent="🤔 ".repeat(5-elapsed).trim();else if(elapsed<10)$("hintText3").textContent="🤔 ".repeat(10-elapsed).trim();else if(elapsed<15)$("hintText4").textContent="🤔 ".repeat(15-elapsed).trim()}
 
 function tick(){elapsed++;soundTick();if(elapsed===5){revealHint(2)}else if(elapsed===10){revealHint(3)}else if(elapsed===15){revealHint(4);soundFinish();clearTimeout(finalTimerId);finalTimerId=setTimeout(()=>{finished=true;update();finalStageTimerId=setTimeout(()=>{const message=$("finalMessage");message.classList.remove("show");message.classList.add("flip");message.textContent="How many hints it took?";finalStageTimerId=setTimeout(()=>{message.classList.remove("flip");void message.offsetWidth;message.classList.add("flip");message.textContent="Let me know in Comments"},3000)},3000)},2000)}if(elapsed>=15){running=false;clearInterval(timerId)}update()}
 
 function start(){if(running||finished)return;initAudio();soundStart();running=true;$("quiz").classList.remove("border-running");$("quiz").style.setProperty("--border-progress","0%");$("quiz").classList.remove("playing");void $("quiz").offsetWidth;$("quiz").classList.add("playing");update();starterTimerId=setTimeout(()=>{$("quiz").classList.add("border-running");timerId=setInterval(tick,1000)},1600)}
-function reset(){clearInterval(timerId);clearTimeout(starterTimerId);clearTimeout(finalTimerId);clearTimeout(finalStageTimerId);elapsed=0;running=false;finished=false;$("quiz").classList.remove("border-running","playing");$("quiz").classList.add("intro");$("quiz").style.setProperty("--border-progress","0%");setHint($("hintBox1"),CONFIG.hint1,true);setHint($("hintBox2"),"🤔 🤔 🤔 🤔 🤔",false);setHint($("hintBox3"),"",false);setHint($("hintBox4"),"",false);$("tip").textContent="pause the video if you need more time";$("tip").classList.remove("final");$("finalMessage").style.display="none";$("finalMessage").classList.remove("show","flip");$("finalMessage").textContent="DID YOU GET IT?";update()}
+function reset(){clearInterval(timerId);clearTimeout(starterTimerId);clearTimeout(finalTimerId);clearTimeout(finalStageTimerId);clearTimeout(engagementTimerId);elapsed=0;running=false;finished=false;$("quiz").classList.remove("border-running","playing");$("quiz").classList.add("intro");$("quiz").style.setProperty("--border-progress","0%");setHint($("hintBox1"),CONFIG.hint1,true);setHint($("hintBox2"),"🤔 🤔 🤔 🤔 🤔",false);setHint($("hintBox3"),"",false);setHint($("hintBox4"),"",false);$("tip").textContent="pause the video if you need more time";$("tip").classList.remove("final");$("engagementText").classList.remove("show");$("finalMessage").style.display="none";$("finalMessage").classList.remove("show","flip");$("finalMessage").textContent="DID YOU GET IT?";update()}
 function openModal(){$("celebrityInput").value=CONFIG.celebrity;$("hint1Input").value=CONFIG.hint1;$("hint2Input").value=CONFIG.hint2;$("hint3Input").value=CONFIG.hint3;$("hint4Input").value=CONFIG.hint4;$("modal").classList.add("open")}
 $("guessEmoji").onclick=event=>{event.stopPropagation();reset();start()};
 $("guessEmoji").onkeydown=event=>{if(event.key==="Enter"||event.key===" "){event.preventDefault();reset();start()}};
