@@ -149,6 +149,10 @@ button{cursor:pointer}
 .bottom{
   margin-top:16px;text-align:center
 }
+.guess-emoji{
+  margin-top:10px;font-size:28px;line-height:1;text-align:center;
+  filter:drop-shadow(1px 1px 1px rgba(0,0,0,.25))
+}
 .tip{
   max-width:245px;margin:0 auto;font-size:12px;line-height:1.35;
   color:var(--white);font-weight:700
@@ -256,6 +260,7 @@ button{cursor:pointer}
       <div class="bottom">
         <div class="final-message" id="finalMessage" style="display:none">DID YOU GET IT?</div>
         <div class="tip" id="tip">pause the video if you need more time</div>
+        <div class="guess-emoji" aria-hidden="true">🤔</div>
       </div>
 
         </div>
