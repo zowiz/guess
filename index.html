@@ -6,471 +6,153 @@
 <title>Guess the Celebrity</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&display=swap');
-
-:root{
-  --blue:#123b8f;
-  --light-blue:#5aa9ff;
-  --gold:#d8ad3d;
-  --green:#1f7a4d;
-  --white:#ffffff;
-  --card-blue:#16479f;
-}
+:root{--blue:#123b8f;--light-blue:#5aa9ff;--gold:#d8ad3d;--green:#1f7a4d;--white:#ffffff;--card-blue:#16479f}
 *{box-sizing:border-box}
-html,body{
-  margin:0;min-height:100%;font-family:"Google Sans",system-ui,sans-serif;
-  background:linear-gradient(135deg,var(--blue) 0%,var(--light-blue) 100%);
-}
+html,body{margin:0;min-height:100%;font-family:"Google Sans",system-ui,sans-serif;background:linear-gradient(135deg,var(--blue) 0%,var(--light-blue) 100%)}
 body{color:var(--white)}
 .quiz-content{text-shadow:1px 1px 1px rgba(0,0,0,.35)}
-button,input,textarea{font:inherit}
-button{cursor:pointer}
-
+button,input,textarea{font:inherit}button{cursor:pointer}
 .app{min-height:100vh;display:grid;place-items:center;padding:18px 10px}
-@property --border-progress{
-  syntax:"<percentage>";
-  inherits:false;
-  initial-value:0%
-}
-.quiz{
-  position:relative;width:360px;max-width:92vw;aspect-ratio:9/16;
-  overflow:hidden;background:var(--blue);border:3px solid transparent;
-  border-radius:18px;
-  isolation:isolate;
-  --border-progress:0%;
-}
-.quiz::before{
-  content:"";
-  position:absolute;inset:0;
-  border-radius:inherit;
-  padding:3px;
-  background:conic-gradient(from -90deg,var(--gold) 0%,var(--gold) var(--border-progress),transparent var(--border-progress),transparent 100%);
-  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
-  -webkit-mask-composite:xor;
-  mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
-  mask-composite:exclude;
-  pointer-events:none;
-  z-index:2;
-}
-.quiz.border-running::before{
-  animation:borderFill 20s linear forwards;
-}
-@keyframes borderFill{
-  from{--border-progress:0%}
-  to{--border-progress:100%}
-}
+@property --border-progress{syntax:"<percentage>";inherits:false;initial-value:0%}
+.quiz{position:relative;width:360px;max-width:92vw;aspect-ratio:9/16;overflow:hidden;background:var(--blue);border:3px solid transparent;border-radius:18px;isolation:isolate;--border-progress:0%}
+.quiz::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:3px;background:conic-gradient(from -90deg,var(--gold) 0%,var(--gold) var(--border-progress),transparent var(--border-progress),transparent 100%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);mask-composite:exclude;pointer-events:none;z-index:2}
+.quiz.border-running::before{animation:borderFill 20s linear forwards}
+@keyframes borderFill{from{--border-progress:0%}to{--border-progress:100%}}
 .quiz-content{height:100%;padding:22px 20px 18px;display:flex;flex-direction:column}
-
-.floating-emojis{
-  position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0
-}
-.floating-emojis span{
-  position:absolute;font-size:18px;opacity:.28;user-select:none;
-  animation:floatEmoji 9s ease-in-out infinite
-}
-.floating-emojis span:nth-child(1){left:8%;top:18%;animation-delay:-1s;animation-duration:10s}
-.floating-emojis span:nth-child(2){left:78%;top:12%;animation-delay:-4s;animation-duration:12s}
-.floating-emojis span:nth-child(3){left:20%;top:48%;animation-delay:-6s;animation-duration:11s}
-.floating-emojis span:nth-child(4){left:84%;top:42%;animation-delay:-2s;animation-duration:10s}
-.floating-emojis span:nth-child(5){left:10%;top:72%;animation-delay:-5s;animation-duration:13s}
-.floating-emojis span:nth-child(6){left:72%;top:68%;animation-delay:-7s;animation-duration:11s}
-.floating-emojis span:nth-child(7){left:45%;top:88%;animation-delay:-3s;animation-duration:12s}
-.floating-emojis span:nth-child(8){left:48%;top:25%;animation-delay:-8s;animation-duration:14s}
-.floating-emojis span:nth-child(9){left:32%;top:8%;animation-delay:-5s;animation-duration:13s}
-.floating-emojis span:nth-child(10){left:91%;top:28%;animation-delay:-2s;animation-duration:11s}
-.floating-emojis span:nth-child(11){left:36%;top:35%;animation-delay:-7s;animation-duration:10s}
-.floating-emojis span:nth-child(12){left:58%;top:52%;animation-delay:-4s;animation-duration:14s}
-.floating-emojis span:nth-child(13){left:3%;top:58%;animation-delay:-8s;animation-duration:12s}
-.floating-emojis span:nth-child(14){left:55%;top:74%;animation-delay:-1s;animation-duration:10s}
-.floating-emojis span:nth-child(15){left:25%;top:82%;animation-delay:-6s;animation-duration:13s}
-.floating-emojis span:nth-child(16){left:88%;top:86%;animation-delay:-3s;animation-duration:12s}
-@keyframes floatEmoji{
-  0%,100%{transform:translate3d(0,0,0) rotate(-5deg)}
-  50%{transform:translate3d(10px,-16px,0) rotate(5deg)}
-}
+.floating-emojis{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.floating-emojis span{position:absolute;font-size:18px;opacity:.28;user-select:none;animation:floatEmoji 9s ease-in-out infinite}
+.floating-emojis span:nth-child(1){left:8%;top:18%;animation-delay:-1s;animation-duration:10s}.floating-emojis span:nth-child(2){left:78%;top:12%;animation-delay:-4s;animation-duration:12s}.floating-emojis span:nth-child(3){left:20%;top:48%;animation-delay:-6s;animation-duration:11s}.floating-emojis span:nth-child(4){left:84%;top:42%;animation-delay:-2s;animation-duration:10s}.floating-emojis span:nth-child(5){left:10%;top:72%;animation-delay:-5s;animation-duration:13s}.floating-emojis span:nth-child(6){left:72%;top:68%;animation-delay:-7s;animation-duration:11s}.floating-emojis span:nth-child(7){left:45%;top:88%;animation-delay:-3s;animation-duration:12s}.floating-emojis span:nth-child(8){left:48%;top:25%;animation-delay:-8s;animation-duration:14s}.floating-emojis span:nth-child(9){left:32%;top:8%;animation-delay:-5s;animation-duration:13s}.floating-emojis span:nth-child(10){left:91%;top:28%;animation-delay:-2s;animation-duration:11s}.floating-emojis span:nth-child(11){left:36%;top:35%;animation-delay:-7s;animation-duration:10s}.floating-emojis span:nth-child(12){left:58%;top:52%;animation-delay:-4s;animation-duration:14s}.floating-emojis span:nth-child(13){left:3%;top:58%;animation-delay:-8s;animation-duration:12s}.floating-emojis span:nth-child(14){left:55%;top:74%;animation-delay:-1s;animation-duration:10s}.floating-emojis span:nth-child(15){left:25%;top:82%;animation-delay:-6s;animation-duration:13s}.floating-emojis span:nth-child(16){left:88%;top:86%;animation-delay:-3s;animation-duration:12s}
+@keyframes floatEmoji{0%,100%{transform:translate3d(0,0,0) rotate(-5deg)}50%{transform:translate3d(10px,-16px,0) rotate(5deg)}}
 .quiz-content{position:relative;z-index:1}
-
 .header{display:flex;align-items:flex-start;justify-content:space-between}
-.eyebrow{
-  display:inline-flex;align-items:center;gap:5px;
-  font-size:14px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
-  color:var(--white);margin-bottom:7px
-}
+.eyebrow{display:inline-flex;align-items:center;gap:5px;font-size:14px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--white);margin-bottom:7px}
 .eyebrow::first-line{color:var(--white)}
-.eyebrow .zeux-pill{
-  display:inline-block;padding:4px 8px;border-radius:999px;
-  background:linear-gradient(135deg,#f7e08a 0%,#d8ad3d 45%,#9b7217 100%);
-  color:#123b8f;letter-spacing:.12em;
-  text-shadow:none;
-  filter:none
-}
-.title{
-  margin:30px 0 0;font-family:"Google Sans",system-ui,sans-serif;font-size:35px;line-height:.95;
-  font-weight:700;letter-spacing:-.06em;max-width:310px;
-  color:#fff;
-  filter:drop-shadow(1px 1px 1px rgba(0,0,0,.35))
-}
+.eyebrow .zeux-pill{display:inline-block;padding:4px 8px;border-radius:999px;background:linear-gradient(135deg,#f7e08a 0%,#d8ad3d 45%,#9b7217 100%);color:#123b8f;letter-spacing:.12em;text-shadow:none;filter:none}
+.title{margin:30px 0 0;font-family:"Google Sans",system-ui,sans-serif;font-size:35px;line-height:.95;font-weight:700;letter-spacing:-.06em;max-width:310px;color:#fff;filter:drop-shadow(1px 1px 1px rgba(0,0,0,.35))}
 .title span{display:block}
-.fullscreen{
-  width:36px;height:36px;flex:none;border:1px solid var(--gold);border-radius:50%;
-  background:rgba(18,59,143,.45);color:var(--gold);font-size:17px
-}
+.fullscreen{width:36px;height:36px;flex:none;border:1px solid var(--gold);border-radius:50%;background:rgba(18,59,143,.45);color:var(--gold);font-size:17px}
 .fullscreen:hover{background:var(--gold);color:var(--blue)}
-
-.hints{
-  margin-top:25px;display:flex;flex-direction:column;gap:9px
-}
-.hint{
-  min-height:58px;border:2px solid var(--gold);border-radius:9px;
-  padding:11px 13px;display:flex;align-items:center;gap:12px;
-  background:linear-gradient(145deg,#0a255f 0%,#123b8f 55%,#071b4a 100%);
-  transition:background .25s,transform .25s
-}
-.hint.revealed{
-  background:linear-gradient(145deg,#1f7a4d 0%,#17613e 55%,#0d472f 100%);
-  border:2px solid var(--gold)
-}
-.hint.revealed .hint-number{
-  background:var(--gold);color:var(--white)
-}
-.hint-number{
-  width:25px;height:25px;display:grid;place-items:center;flex:none;
-  border:none;border-radius:50%;font-size:10px;font-weight:900;
-  background:var(--gold);color:var(--white)
-}
+.hints{margin-top:25px;display:flex;flex-direction:column;gap:9px}
+.hint{min-height:58px;border:2px solid var(--gold);border-radius:9px;padding:11px 13px;display:flex;align-items:center;gap:12px;background:linear-gradient(145deg,#0a255f 0%,#123b8f 55%,#071b4a 100%);transition:background .25s,transform .25s}
+.hint.revealed{background:linear-gradient(145deg,#1f7a4d 0%,#17613e 55%,#0d472f 100%);border:2px solid var(--gold)}
+.hint.revealed .hint-number{background:var(--gold);color:var(--white)}
+.hint-number{width:25px;height:25px;display:grid;place-items:center;flex:none;border:none;border-radius:50%;font-size:10px;font-weight:900;background:var(--gold);color:var(--white)}
 .hint-copy{min-width:0;font-size:18px;line-height:1.28;font-weight:500}
 .hint.locked .hint-copy{font-family:"Google Sans",system-ui,sans-serif;font-size:18px;letter-spacing:.02em}
 .hint.reveal{animation:flipReveal .65s ease both;transform-origin:center}
-@keyframes flipReveal{
-  0%{opacity:.45;transform:perspective(500px) rotateX(-90deg)}
-  55%{opacity:1;transform:perspective(500px) rotateX(12deg)}
-  100%{opacity:1;transform:perspective(500px) rotateX(0)}
-}
-
-.bottom{
-  margin-top:16px;text-align:center
-}
-.guess-emoji{
-  position:absolute;bottom:14px;left:50%;transform:translateX(-50%);
-  font-size:28px;line-height:1;text-align:center;z-index:3;
-  cursor:pointer;
-  user-select:none;
-  filter:drop-shadow(1px 1px 1px rgba(0,0,0,.25));
-}
+@keyframes flipReveal{0%{opacity:.45;transform:perspective(500px) rotateX(-90deg)}55%{opacity:1;transform:perspective(500px) rotateX(12deg)}100%{opacity:1;transform:perspective(500px) rotateX(0)}}
+.bottom{margin-top:16px;text-align:center}
+.guess-emoji{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);font-size:28px;line-height:1;text-align:center;z-index:3;cursor:pointer;user-select:none;filter:drop-shadow(1px 1px 1px rgba(0,0,0,.25))}
 .guess-emoji:hover{transform:translateX(-50%) scale(1.08)}
-.tip{
-  max-width:245px;margin:0 auto;font-size:12px;line-height:1.35;
-  color:var(--white);font-weight:700
-}
+.tip{max-width:245px;margin:0 auto;font-size:12px;line-height:1.35;color:var(--white);font-weight:700}
 .tip.final{color:var(--gold);font-size:13px}
-.final-message{
-  font-size:22px;font-weight:400;
-  letter-spacing:0;line-height:1.05;margin-bottom:9px;
-  opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease
-}
-.final-message.show{
-  opacity:1;transform:translateY(0);color:#fff;
-  animation:slideUpFinal .6s cubic-bezier(.2,.8,.2,1) both
-}
-.final-message.flip{
-  animation:flipFinal .7s ease both
-}
-@keyframes slideUpFinal{
-  from{opacity:0;transform:translateY(28px)}
-  to{opacity:1;transform:translateY(0)}
-}
-@keyframes flipFinal{
-  0%{opacity:1;transform:perspective(500px) rotateX(0)}
-  45%{opacity:0;transform:perspective(500px) rotateX(-90deg)}
-  55%{opacity:0;transform:perspective(500px) rotateX(90deg)}
-  100%{opacity:1;transform:perspective(500px) rotateX(0)}
-}
-
-.edit-hint{
-  position:absolute;bottom:10px;left:50%;transform:translateX(-50%);
-  font-size:8px;color:rgba(0,0,0,.25);white-space:nowrap
-}
-
-.modal-backdrop{
-  position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;
-  padding:20px;background:rgba(0,0,0,.72)
-}
+.final-message{font-size:22px;font-weight:400;letter-spacing:0;line-height:1.05;margin-bottom:9px;opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease}
+.final-message.show{opacity:1;transform:translateY(0);color:#fff;animation:slideUpFinal .6s cubic-bezier(.2,.8,.2,1) both}
+.final-message.flip{animation:flipFinal .7s ease both}
+@keyframes slideUpFinal{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+@keyframes flipFinal{0%{opacity:1;transform:perspective(500px) rotateX(0)}45%{opacity:0;transform:perspective(500px) rotateX(-90deg)}55%{opacity:0;transform:perspective(500px) rotateX(90deg)}100%{opacity:1;transform:perspective(500px) rotateX(0)}}
+.quiz.intro .header,.quiz.intro .hints,.quiz.intro .tip{opacity:0;visibility:hidden}
+.quiz.intro.playing .header{animation:introHeader .7s cubic-bezier(.2,.8,.2,1) forwards}
+.quiz.intro.playing .hints{animation:introHints .55s ease .45s forwards}
+.quiz.intro.playing .hint{opacity:0;animation:introHint .45s ease forwards}
+.quiz.intro.playing .hint:nth-child(1){animation-delay:.55s}.quiz.intro.playing .hint:nth-child(2){animation-delay:.68s}.quiz.intro.playing .hint:nth-child(3){animation-delay:.81s}.quiz.intro.playing .hint:nth-child(4){animation-delay:.94s}
+.quiz.intro.playing .tip{animation:introTip .45s ease 1.12s forwards}
+@keyframes introHeader{from{opacity:0;transform:translateY(-18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes introHints{from{opacity:0}to{opacity:1}}
+@keyframes introHint{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes introTip{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.edit-hint{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);font-size:8px;color:rgba(0,0,0,.25);white-space:nowrap}
+.modal-backdrop{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(0,0,0,.72)}
 .modal-backdrop.open{display:flex}
-.form{
-  width:min(420px,100%);max-height:90vh;overflow:auto;background:var(--blue);
-  border:1px solid var(--gold);border-radius:16px;padding:20px;box-shadow:0 12px 35px rgba(0,0,0,.35)
-}
+.form{width:min(420px,100%);max-height:90vh;overflow:auto;background:var(--blue);border:1px solid var(--gold);border-radius:16px;padding:20px;box-shadow:0 12px 35px rgba(0,0,0,.35)}
 .form h2{margin:0 0 18px;font-family:"Google Sans",system-ui,sans-serif;font-size:21px}
-.field{margin-bottom:12px}
-.field label{display:block;margin-bottom:5px;font-size:10px;font-weight:600;letter-spacing:.12em}
-.field textarea,.field input{
-  width:100%;border:1px solid #000;border-radius:8px;padding:10px;background:rgba(255,255,255,.94);color:#111;
-  font-size:13px;font-weight:600;outline:none;resize:vertical
-}
+.field{margin-bottom:12px}.field label{display:block;margin-bottom:5px;font-size:10px;font-weight:600;letter-spacing:.12em}
+.field textarea,.field input{width:100%;border:1px solid #000;border-radius:8px;padding:10px;background:rgba(255,255,255,.94);color:#111;font-size:13px;font-weight:600;outline:none;resize:vertical}
 .field textarea:focus,.field input:focus{box-shadow:inset 0 0 0 2px var(--gold)}
-.actions{display:flex;gap:9px;margin-top:17px}
-.actions button{
-  flex:1;border:1px solid #000;border-radius:8px;padding:10px;
-  font-size:11px;font-weight:600
-}
-.cancel{background:#fff}
-.submit{background:var(--gold)}
-
+.actions{display:flex;gap:9px;margin-top:17px}.actions button{flex:1;border:1px solid #000;border-radius:8px;padding:10px;font-size:11px;font-weight:600}
+.cancel{background:#fff}.submit{background:var(--gold)}
 </style>
 </head>
 <body>
 <div class="app">
-  <script>
-    const CONFIG = {
-      celebrity: "Celebrity Name",
-      hint1: "Started their career as a child actor.",
-      hint2: "Known for a major role in a popular film.",
-      hint3: "Has received multiple major award nominations.",
-      hint4: "Also works in television and other projects."
-    };
-  </script>
-
-  <main class="quiz" id="quiz">
-    <div class="floating-emojis" aria-hidden="true">
-      <span>🧠</span><span>🤔</span><span>😜</span><span>😤</span><span>🧐</span><span>😵‍💫</span><span>🤯</span><span>😏</span><span>🧠</span><span>🤔</span><span>😜</span><span>😤</span><span>🧐</span><span>😵‍💫</span><span>🤯</span><span>😏</span>
-    </div>
-    <div class="quiz-content">
-      <header class="header">
-        <div>
-          <div class="eyebrow" id="brandEdit" role="button" tabindex="0" aria-label="Edit celebrity and hints"><span class="zeux-pill">ZEUX</span><span>TRIVIA</span></div>
-          <h1 class="title" id="gameTitle"><span>GUESS</span><span>THE CELEBRITY</span></h1>
-        </div>
-        <button class="fullscreen" id="fullscreenBtn" aria-label="Enter fullscreen">⛶</button>
-      </header>
-
-      <section class="hints" id="hints">
-        <div class="hint revealed" id="hintBox1">
-          <span class="hint-number">01</span>
-          <span class="hint-copy" id="hintText1"></span>
-        </div>
-        <div class="hint locked" id="hintBox2">
-          <span class="hint-number">02</span>
-          <span class="hint-copy" id="hintText2">revealing hint in 5</span>
-        </div>
-        <div class="hint locked" id="hintBox3">
-          <span class="hint-number">03</span>
-          <span class="hint-copy" id="hintText3"></span>
-        </div>
-        <div class="hint locked" id="hintBox4">
-          <span class="hint-number">04</span>
-          <span class="hint-copy" id="hintText4"></span>
-        </div>
-      </section>
-
-      <div class="bottom">
-        <div class="final-message" id="finalMessage" style="display:none">DID YOU GET IT?</div>
-        <div class="tip" id="tip">pause the video if you need more time</div>
-        <div class="guess-emoji" id="guessEmoji" role="button" tabindex="0" aria-label="Start or restart quiz">🤔</div>
-      </div>
-
-        </div>
-  </main>
-</div>
-
-<div class="modal-backdrop" id="modal">
-  <form class="form" id="form">
-    <h2>Edit Celebrity</h2>
-    <div class="field">
-      <label for="celebrityInput">CELEBRITY (NOT SHOWN)</label>
-      <input id="celebrityInput" type="text" required>
-    </div>
-    <div class="field"><label for="hint1Input">HINT 1</label><textarea id="hint1Input" rows="2" required></textarea></div>
-    <div class="field"><label for="hint2Input">HINT 2</label><textarea id="hint2Input" rows="2" required></textarea></div>
-    <div class="field"><label for="hint3Input">HINT 3</label><textarea id="hint3Input" rows="2" required></textarea></div>
-    <div class="field"><label for="hint4Input">HINT 4</label><textarea id="hint4Input" rows="2" required></textarea></div>
-    <div class="actions">
-      <button type="button" class="cancel" id="cancelBtn">CANCEL</button>
-      <button type="submit" class="submit">SAVE</button>
-    </div>
-  </form>
-</div>
-
 <script>
-let elapsed = 0;
-let running = false;
-let timerId = null;
-let finished = false;
-let finalTimerId = null;
-let finalStageTimerId = null;
+const CONFIG={celebrity:"Celebrity Name",hint1:"Started their career as a child actor.",hint2:"Known for a major role in a popular film.",hint3:"Has received multiple major award nominations.",hint4:"Also works in television and other projects."};
+</script>
+<main class="quiz intro" id="quiz">
+<div class="floating-emojis" aria-hidden="true"><span>🧠</span><span>🤔</span><span>😜</span><span>😤</span><span>🧐</span><span>😵‍💫</span><span>🤯</span><span>😏</span><span>🧠</span><span>🤔</span><span>😜</span><span>😤</span><span>🧐</span><span>😵‍💫</span><span>🤯</span><span>😏</span></div>
+<div class="quiz-content">
+<header class="header"><div><div class="eyebrow" id="brandEdit" role="button" tabindex="0" aria-label="Edit celebrity and hints"><span class="zeux-pill">ZEUX</span><span>TRIVIA</span></div><h1 class="title" id="gameTitle"><span>GUESS</span><span>THE CELEBRITY</span></h1></div><button class="fullscreen" id="fullscreenBtn" aria-label="Enter fullscreen">⛶</button></header>
+<section class="hints" id="hints">
+<div class="hint revealed" id="hintBox1"><span class="hint-number">01</span><span class="hint-copy" id="hintText1"></span></div>
+<div class="hint locked" id="hintBox2"><span class="hint-number">02</span><span class="hint-copy" id="hintText2">revealing hint in 5</span></div>
+<div class="hint locked" id="hintBox3"><span class="hint-number">03</span><span class="hint-copy" id="hintText3"></span></div>
+<div class="hint locked" id="hintBox4"><span class="hint-number">04</span><span class="hint-copy" id="hintText4"></span></div>
+</section>
+<div class="bottom"><div class="final-message" id="finalMessage" style="display:none">DID YOU GET IT?</div><div class="tip" id="tip">pause the video if you need more time</div><div class="guess-emoji" id="guessEmoji" role="button" tabindex="0" aria-label="Start or restart quiz">🤔</div></div>
+</div>
+</main>
+</div>
+<div class="modal-backdrop" id="modal">
+<form class="form" id="form"><h2>Edit Celebrity</h2>
+<div class="field"><label for="celebrityInput">CELEBRITY (NOT SHOWN)</label><input id="celebrityInput" type="text" required></div>
+<div class="field"><label for="hint1Input">HINT 1</label><textarea id="hint1Input" rows="2" required></textarea></div>
+<div class="field"><label for="hint2Input">HINT 2</label><textarea id="hint2Input" rows="2" required></textarea></div>
+<div class="field"><label for="hint3Input">HINT 3</label><textarea id="hint3Input" rows="2" required></textarea></div>
+<div class="field"><label for="hint4Input">HINT 4</label><textarea id="hint4Input" rows="2" required></textarea></div>
+<div class="actions"><button type="button" class="cancel" id="cancelBtn">CANCEL</button><button type="submit" class="submit">SAVE</button></div>
+</form></div>
+<script>
+let elapsed=0,running=false,timerId=null,finished=false,finalTimerId=null,finalStageTimerId=null;
+const $=id=>document.getElementById(id);
 
-const $ = id => document.getElementById(id);
-
-function setHint(box, text, revealed){
-  const copy = box.querySelector(".hint-copy");
-  copy.textContent = text;
-  box.classList.toggle("locked", !revealed);
-  box.classList.toggle("revealed", revealed);
-}
-
-function revealHint(number){
-  const box = $("hintBox" + number);
-  const text = CONFIG["hint" + number];
-  setHint(box, text, true);
-  box.classList.remove("reveal");
-  void box.offsetWidth;
-  box.classList.add("reveal");
-}
-
+function setHint(box,text,revealed){const copy=box.querySelector(".hint-copy");copy.textContent=text;box.classList.toggle("locked",!revealed);box.classList.toggle("revealed",revealed)}
+function revealHint(number){const box=$("hintBox"+number),text=CONFIG["hint"+number];setHint(box,text,true);box.classList.remove("reveal");void box.offsetWidth;box.classList.add("reveal")}
 function update(){
-  $("hintText1").textContent = CONFIG.hint1;
-
-  if(finished){
-    $("finalMessage").style.display = "block";
-    $("finalMessage").classList.add("show");
-    $("tip").textContent = "check first comment for answer";
-    $("tip").classList.add("final");
-    return;
-  }
-
-  $("finalMessage").style.display = "none";
-  $("tip").textContent = "pause the video if you need more time";
-  $("tip").classList.remove("final");
-
-  if(elapsed < 5) $("hintText2").textContent = "revealing hint in " + (5 - elapsed);
-  else if(elapsed < 10) $("hintText3").textContent = "revealing hint in " + (10 - elapsed);
-  else if(elapsed < 15) $("hintText4").textContent = "revealing hint in " + (15 - elapsed);
+$("hintText1").textContent=CONFIG.hint1;
+if(finished){$("finalMessage").style.display="block";$("finalMessage").classList.add("show");$("tip").textContent="check first comment for answer";$("tip").classList.add("final");return}
+$("finalMessage").style.display="none";$("tip").textContent="pause the video if you need more time";$("tip").classList.remove("final");
+if(elapsed<5)$("hintText2").textContent="revealing hint in "+(5-elapsed);
+else if(elapsed<10)$("hintText3").textContent="revealing hint in "+(10-elapsed);
+else if(elapsed<15)$("hintText4").textContent="revealing hint in "+(15-elapsed)
 }
-
 function tick(){
-  elapsed++;
-
-  if(elapsed === 5) revealHint(2);
-  if(elapsed === 10) revealHint(3);
-  if(elapsed === 15){
-    revealHint(4);
-    clearTimeout(finalTimerId);
-    finalTimerId = setTimeout(() => {
-      finished = true;
-      update();
-
-      finalStageTimerId = setTimeout(() => {
-        const message = $("finalMessage");
-        message.classList.remove("show");
-        message.classList.add("flip");
-        message.textContent = "How many hints it took?";
-
-        finalStageTimerId = setTimeout(() => {
-          message.classList.remove("flip");
-          void message.offsetWidth;
-          message.classList.add("flip");
-          message.textContent = "Let me know in Comments";
-        }, 3000);
-      }, 3000);
-    }, 2000);
-  }
-
-  if(elapsed >= 15){
-    running = false;
-    clearInterval(timerId);
-  }
-
-  update();
+elapsed++;
+if(elapsed===5)revealHint(2);
+if(elapsed===10)revealHint(3);
+if(elapsed===15){revealHint(4);clearTimeout(finalTimerId);finalTimerId=setTimeout(()=>{finished=true;update();finalStageTimerId=setTimeout(()=>{const message=$("finalMessage");message.classList.remove("show");message.classList.add("flip");message.textContent="How many hints it took?";finalStageTimerId=setTimeout(()=>{message.classList.remove("flip");void message.offsetWidth;message.classList.add("flip");message.textContent="Let me know in Comments"},3000)},3000)},2000)}
+if(elapsed>=15){running=false;clearInterval(timerId)}
+update()
 }
-
 function start(){
-  if(running || finished) return;
-  running = true;
-  $("quiz").classList.remove("border-running");
-  $("quiz").classList.remove("border-running");
-  $("quiz").style.setProperty("--border-progress","0%");
-  void $("quiz").offsetWidth;
-  $("quiz").classList.add("border-running");
-  update();
-  timerId = setInterval(tick, 1000);
+if(running||finished)return;
+running=true;
+$("quiz").classList.remove("border-running");
+$("quiz").style.setProperty("--border-progress","0%");
+void $("quiz").offsetWidth;
+$("quiz").classList.add("border-running");
+$("quiz").classList.add("playing");
+update();
+setTimeout(()=>{timerId=setInterval(tick,1000)},1500)
 }
-
 function reset(){
-  clearInterval(timerId);
-  clearTimeout(finalTimerId);
-  clearTimeout(finalStageTimerId);
-  elapsed = 0;
-  running = false;
-  finished = false;
-
-  $("quiz").style.setProperty("--border-progress","0%");
-
-  setHint($("hintBox1"), CONFIG.hint1, true);
-  setHint($("hintBox2"), "revealing hint in 5", false);
-  setHint($("hintBox3"), "", false);
-  setHint($("hintBox4"), "", false);
-
-  $("tip").textContent = "pause the video if you need more time";
-  $("tip").classList.remove("final");
-  $("finalMessage").style.display = "none";
-  $("finalMessage").classList.remove("show","flip");
-  $("finalMessage").textContent = "DID YOU GET IT?";
-  update();
+clearInterval(timerId);clearTimeout(finalTimerId);clearTimeout(finalStageTimerId);
+elapsed=0;running=false;finished=false;
+$("quiz").classList.remove("border-running","playing");
+$("quiz").classList.add("intro");
+$("quiz").style.setProperty("--border-progress","0%");
+setHint($("hintBox1"),CONFIG.hint1,true);setHint($("hintBox2"),"revealing hint in 5",false);setHint($("hintBox3"),"",false);setHint($("hintBox4"),"",false);
+$("tip").textContent="pause the video if you need more time";$("tip").classList.remove("final");$("finalMessage").style.display="none";$("finalMessage").classList.remove("show","flip");$("finalMessage").textContent="DID YOU GET IT?";update()
 }
-
-function openModal(){
-  $("celebrityInput").value = CONFIG.celebrity;
-  $("hint1Input").value = CONFIG.hint1;
-  $("hint2Input").value = CONFIG.hint2;
-  $("hint3Input").value = CONFIG.hint3;
-  $("hint4Input").value = CONFIG.hint4;
-  $("modal").classList.add("open");
-}
-
-$("guessEmoji").onclick = event => {
-  event.stopPropagation();
-  reset();
-  start();
-};
-
-$("guessEmoji").onkeydown = event => {
-  if(event.key === "Enter" || event.key === " "){
-    event.preventDefault();
-    reset();
-    start();
-  }
-};
-
-$("brandEdit").onclick = event => {
-  event.stopPropagation();
-  openModal();
-};
-
-$("brandEdit").onkeydown = event => {
-  if(event.key === "Enter" || event.key === " "){
-    event.preventDefault();
-    openModal();
-  }
-};
-
-$("quiz").addEventListener("click", event => {
-  if(event.target.closest(".hint")) start();
-});
-
-$("form").onsubmit = event => {
-  event.preventDefault();
-  CONFIG.celebrity = $("celebrityInput").value.trim();
-  CONFIG.hint1 = $("hint1Input").value.trim();
-  CONFIG.hint2 = $("hint2Input").value.trim();
-  CONFIG.hint3 = $("hint3Input").value.trim();
-  CONFIG.hint4 = $("hint4Input").value.trim();
-  reset();
-  $("modal").classList.remove("open");
-};
-
-$("cancelBtn").onclick = () => $("modal").classList.remove("open");
-
-$("modal").onclick = event => {
-  if(event.target === $("modal")) $("modal").classList.remove("open");
-};
-
-$("fullscreenBtn").onclick = async event => {
-  event.stopPropagation();
-  try{
-    if(!document.fullscreenElement) await $("quiz").requestFullscreen();
-    else await document.exitFullscreen();
-  }catch(e){ console.warn("Fullscreen unavailable:", e); }
-};
-
-
+function openModal(){$("celebrityInput").value=CONFIG.celebrity;$("hint1Input").value=CONFIG.hint1;$("hint2Input").value=CONFIG.hint2;$("hint3Input").value=CONFIG.hint3;$("hint4Input").value=CONFIG.hint4;$("modal").classList.add("open")}
+$("guessEmoji").onclick=event=>{event.stopPropagation();reset();start()};
+$("guessEmoji").onkeydown=event=>{if(event.key==="Enter"||event.key===" "){event.preventDefault();reset();start()}};
+$("brandEdit").onclick=event=>{event.stopPropagation();openModal()};
+$("brandEdit").onkeydown=event=>{if(event.key==="Enter"||event.key===" "){event.preventDefault();openModal()}};
+$("quiz").addEventListener("click",event=>{if(event.target.closest(".hint"))start()});
+$("form").onsubmit=event=>{event.preventDefault();CONFIG.celebrity=$("celebrityInput").value.trim();CONFIG.hint1=$("hint1Input").value.trim();CONFIG.hint2=$("hint2Input").value.trim();CONFIG.hint3=$("hint3Input").value.trim();CONFIG.hint4=$("hint4Input").value.trim();reset();$("modal").classList.remove("open")};
+$("cancelBtn").onclick=()=>$("modal").classList.remove("open");
+$("modal").onclick=event=>{if(event.target===$("modal"))$("modal").classList.remove("open")};
+$("fullscreenBtn").onclick=async event=>{event.stopPropagation();try{if(!document.fullscreenElement)await $("quiz").requestFullscreen();else await document.exitFullscreen()}catch(e){console.warn("Fullscreen unavailable:",e)}};
 reset();
 </script>
 </body>
