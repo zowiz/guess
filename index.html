@@ -32,7 +32,7 @@ button,input,textarea{font:inherit}button{cursor:pointer}
 .title span{display:block}
 .fullscreen{width:36px;height:36px;flex:none;border:1px solid var(--gold);border-radius:50%;background:rgba(18,59,143,.45);color:var(--gold);font-size:17px}
 .fullscreen:hover{background:var(--gold);color:var(--blue)}
-.hints{margin-top:25px;display:flex;flex-direction:column;gap:9px}
+.tip{margin-top:12px}.hints{margin-top:25px;display:flex;flex-direction:column;gap:9px}
 .hint{min-height:58px;border:2px solid var(--gold);border-radius:9px;padding:11px 13px;display:flex;align-items:center;gap:12px;background:linear-gradient(145deg,#0a255f 0%,#123b8f 55%,#071b4a 100%);transition:background .25s,transform .25s}
 .hint.revealed{background:linear-gradient(145deg,#1f7a4d 0%,#17613e 55%,#0d472f 100%);border:2px solid var(--gold)}
 .hint.revealed .hint-number{background:var(--gold);color:var(--white)}
@@ -83,13 +83,14 @@ const CONFIG={celebrity:"Celebrity Name",hint1:"Started their career as a child 
 <div class="floating-emojis" aria-hidden="true"><span>🧠</span><span>🤔</span><span>😜</span><span>😤</span><span>🧐</span><span>😵‍💫</span><span>🤯</span><span>😏</span><span>🧠</span><span>🤔</span><span>😜</span><span>😤</span><span>🧐</span><span>😵‍💫</span><span>🤯</span><span>😏</span></div>
 <div class="quiz-content">
 <header class="header"><div><div class="eyebrow" id="brandEdit" role="button" tabindex="0" aria-label="Edit celebrity and hints"><span class="zeux-pill">ZEUX</span><span>TRIVIA</span></div><h1 class="title" id="gameTitle"><span>GUESS</span><span>THE CELEBRITY</span></h1></div><button class="fullscreen" id="fullscreenBtn" aria-label="Enter fullscreen">⛶</button></header>
+<div class="tip" id="tip">pause the video if you need more time</div>
 <section class="hints" id="hints">
 <div class="hint revealed" id="hintBox1"><span class="hint-number">01</span><span class="hint-copy" id="hintText1"></span></div>
 <div class="hint locked" id="hintBox2"><span class="hint-number">02</span><span class="hint-copy" id="hintText2">revealing hint in 5</span></div>
 <div class="hint locked" id="hintBox3"><span class="hint-number">03</span><span class="hint-copy" id="hintText3"></span></div>
 <div class="hint locked" id="hintBox4"><span class="hint-number">04</span><span class="hint-copy" id="hintText4"></span></div>
 </section>
-<div class="bottom"><div class="final-message" id="finalMessage" style="display:none">DID YOU GET IT?</div><div class="tip" id="tip">pause the video if you need more time</div><div class="guess-emoji" id="guessEmoji" role="button" tabindex="0" aria-label="Start or restart quiz">🤔</div></div>
+<div class="bottom"><div class="final-message" id="finalMessage" style="display:none">DID YOU GET IT?</div><div class="guess-emoji" id="guessEmoji" role="button" tabindex="0" aria-label="Start or restart quiz">🤔</div></div>
 </div>
 </main>
 </div>
