@@ -92,7 +92,7 @@ const CONFIG={celebrity:"Celebrity Name",hint1:"Started their career as a child 
 <main class="quiz intro" id="quiz">
 <div class="floating-emojis" aria-hidden="true"><span>🧠</span><span>🤔</span><span>😜</span><span>😤</span><span>🧐</span><span>😵‍💫</span><span>🤯</span><span>😏</span><span>🧠</span><span>🤔</span><span>😜</span><span>😤</span><span>🧐</span><span>😵‍💫</span><span>🤯</span><span>😏</span></div>
 <div class="quiz-content">
-<header class="header"><div><div class="eyebrow" id="brandEdit" role="button" tabindex="0" aria-label="Edit celebrity and hints"><span class="zeux-pill">ZEUX</span><span>TRIVIA</span></div><h1 class="title" id="gameTitle"><span>GUESS</span><span>THE CELEBRITY</span></h1></div><button class="fullscreen" id="fullscreenBtn" aria-label="Enter fullscreen">⛶</button></header>
+<header class="header"><div><div class="eyebrow" id="brandEdit" role="button" tabindex="0" aria-label="Edit celebrity and hints"><span class="zeux-pill">ZEUX</span><span>TRIVIA</span></div><h1 class="title" id="gameTitle" role="button" tabindex="0" aria-label="Reset quiz to first frame"><span>GUESS</span><span>THE CELEBRITY</span></h1></div><button class="fullscreen" id="fullscreenBtn" aria-label="Enter fullscreen">⛶</button></header>
 <div class="engagement-text" id="engagementText"><span>Like</span><span>Share</span><span>Subscribe</span></div>
 <div class="tip" id="tip">Pause the video if you need more time</div>
 <section class="hints" id="hints">
@@ -136,6 +136,8 @@ function reset(){clearInterval(timerId);clearTimeout(starterTimerId);clearTimeou
 function openModal(){$("celebrityInput").value=CONFIG.celebrity;$("hint1Input").value=CONFIG.hint1;$("hint2Input").value=CONFIG.hint2;$("hint3Input").value=CONFIG.hint3;$("hint4Input").value=CONFIG.hint4;$("modal").classList.add("open")}
 $("guessEmoji").onclick=event=>{event.stopPropagation();reset();start()};
 $("guessEmoji").onkeydown=event=>{if(event.key==="Enter"||event.key===" "){event.preventDefault();reset();start()}};
+$("gameTitle").onclick=event=>{event.stopPropagation();reset()};
+$("gameTitle").onkeydown=event=>{if(event.key==="Enter"||event.key===" "){event.preventDefault();reset()}};
 $("brandEdit").onclick=event=>{event.stopPropagation();openModal()};
 $("brandEdit").onkeydown=event=>{if(event.key==="Enter"||event.key===" "){event.preventDefault();openModal()}};
 $("quiz").addEventListener("click",event=>{if(event.target.closest(".hint"))start()});
