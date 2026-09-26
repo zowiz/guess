@@ -152,8 +152,11 @@ button{cursor:pointer}
 .guess-emoji{
   position:absolute;bottom:14px;left:50%;transform:translateX(-50%);
   font-size:28px;line-height:1;text-align:center;z-index:3;
+  cursor:pointer;
+  user-select:none;
   filter:drop-shadow(1px 1px 1px rgba(0,0,0,.25));
 }
+.guess-emoji:hover{transform:translateX(-50%) scale(1.08)}
 .tip{
   max-width:245px;margin:0 auto;font-size:12px;line-height:1.35;
   color:var(--white);font-weight:700
@@ -234,7 +237,7 @@ button{cursor:pointer}
       <header class="header">
         <div>
           <div class="eyebrow" id="brandEdit" role="button" tabindex="0" aria-label="Edit celebrity and hints"><span class="zeux-pill">ZEUX</span><span>TRIVIA</span></div>
-          <h1 class="title" id="gameTitle" role="button" tabindex="0" aria-label="Restart game"><span>GUESS</span><span>THE CELEBRITY</span></h1>
+          <h1 class="title" id="gameTitle"><span>GUESS</span><span>THE CELEBRITY</span></h1>
         </div>
         <button class="fullscreen" id="fullscreenBtn" aria-label="Enter fullscreen">⛶</button>
       </header>
@@ -261,7 +264,7 @@ button{cursor:pointer}
       <div class="bottom">
         <div class="final-message" id="finalMessage" style="display:none">DID YOU GET IT?</div>
         <div class="tip" id="tip">pause the video if you need more time</div>
-        <div class="guess-emoji" aria-hidden="true">🤔</div>
+        <div class="guess-emoji" id="guessEmoji" role="button" tabindex="0" aria-label="Start or restart quiz">🤔</div>
       </div>
 
         </div>
@@ -412,13 +415,13 @@ function openModal(){
   $("modal").classList.add("open");
 }
 
-$("gameTitle").onclick = event => {
+$("guessEmoji").onclick = event => {
   event.stopPropagation();
   reset();
   start();
 };
 
-$("gameTitle").onkeydown = event => {
+$("guessEmoji").onkeydown = event => {
   if(event.key === "Enter" || event.key === " "){
     event.preventDefault();
     reset();
