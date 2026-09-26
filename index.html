@@ -49,13 +49,15 @@ button,input,textarea{font:inherit}button{cursor:pointer}
 .final-message.flip{animation:flipFinal .7s ease both}
 @keyframes slideUpFinal{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
 @keyframes flipFinal{0%{opacity:1;transform:perspective(500px) rotateX(0)}45%{opacity:0;transform:perspective(500px) rotateX(-90deg)}55%{opacity:0;transform:perspective(500px) rotateX(90deg)}100%{opacity:1;transform:perspective(500px) rotateX(0)}}
-.quiz.intro .title,.quiz.intro .hints,.quiz.intro .engagement-text{font-size:18px;line-height:1.2;font-weight:600;margin-top:12px;margin-bottom:6px;color:var(--white)}
+.engagement-text{font-size:18px;line-height:1.2;font-weight:600;margin-top:12px;margin-bottom:6px;color:var(--white)}
+.quiz.intro .title,.quiz.intro .hints,.quiz.intro .engagement-text{opacity:0;visibility:hidden}
 .tip{opacity:0;visibility:hidden}
 .tip.final .tip-hand{display:inline-block;animation:tipHandSlide 1s ease-in-out infinite}
 @keyframes tipHandSlide{0%,100%{transform:translateX(0)}50%{transform:translateX(6px)}}
-.quiz.intro.playing .title,.quiz.intro.playing .hints,.quiz.intro.playing .tip{visibility:visible}
+.quiz.intro.playing .title,.quiz.intro.playing .hints,.quiz.intro.playing .engagement-text,.quiz.intro.playing .tip{visibility:visible}
 .quiz.intro.playing .title{animation:introHeader .7s cubic-bezier(.2,.8,.2,1) forwards}
 .quiz.intro.playing .hints{animation:introHints .55s ease .45s forwards}
+.quiz.intro.playing .engagement-text{animation:introTip .45s ease 1.12s forwards}
 .quiz.intro.playing .hint{opacity:0;animation:introHint .45s ease forwards}
 .quiz.intro.playing .hint:nth-child(1){animation-delay:.55s}.quiz.intro.playing .hint:nth-child(2){animation-delay:.68s}.quiz.intro.playing .hint:nth-child(3){animation-delay:.81s}.quiz.intro.playing .hint:nth-child(4){animation-delay:.94s}
 .quiz.intro.playing .tip{animation:introTip .45s ease 1.12s forwards}
