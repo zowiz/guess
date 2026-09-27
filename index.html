@@ -25,8 +25,6 @@ button,input,textarea{font:inherit}button{cursor:pointer}
 .eyebrow .zeux-pill{display:inline-block;padding:4px 8px;border-radius:999px;background:linear-gradient(135deg,#f7e08a 0%,#d8ad3d 45%,#9b7217 100%);color:#123b8f;letter-spacing:.12em;text-shadow:none;filter:none}
 .title{margin:30px 0 0;font-family:"Google Sans",system-ui,sans-serif;font-size:35px;line-height:.95;font-weight:700;letter-spacing:-.06em;max-width:310px;color:#fff;filter:drop-shadow(1px 1px 1px rgba(0,0,0,.35))}
 .title span{display:inline}
-.fullscreen{width:36px;height:36px;flex:none;border:1px solid var(--gold);border-radius:50%;background:rgba(18,59,143,.45);color:var(--gold);font-size:17px}
-.fullscreen:hover{background:var(--gold);color:var(--blue)}
 .hints{margin-top:20px;display:flex;flex-direction:column;gap:9px}
 .hint{min-height:58px;border:2px solid var(--gold);border-radius:9px;padding:11px 13px;display:flex;align-items:center;gap:12px;background:linear-gradient(145deg,#0a255f 0%,#123b8f 55%,#071b4a 100%);transition:background .25s,transform .25s}
 .hint.revealed{background:linear-gradient(145deg,#1f7a4d 0%,#17613e 55%,#0d472f 100%);border:2px solid var(--gold)}
@@ -87,7 +85,7 @@ const CONFIG={celebrity:"Celebrity Name",hint1:"Started their career as a child 
 <main class="quiz intro" id="quiz">
 <div class="floating-emojis" aria-hidden="true"><span>🧠</span><span>🤔</span><span>😜</span><span>😤</span><span>🧐</span><span>😵‍💫</span><span>🤯</span><span>😏</span><span>🧠</span><span>🤔</span><span>😜</span><span>😤</span><span>🧐</span><span>😵‍💫</span><span>🤯</span><span>😏</span></div>
 <div class="quiz-content">
-<header class="header"><div><div class="eyebrow" id="brandEdit" role="button" tabindex="0" aria-label="Edit celebrity and hints"><span class="zeux-pill">ZEUX</span><span>TRIVIA</span></div><h1 class="title" id="gameTitle" role="button" tabindex="0" aria-label="Reset quiz to first frame"><span>GUESS</span><span>THE CELEBRITY</span></h1></div><button class="fullscreen" id="fullscreenBtn" aria-label="Enter fullscreen">⛶</button></header>
+<header class="header"><div><div class="eyebrow" id="brandEdit" role="button" tabindex="0" aria-label="Edit celebrity and hints"><span class="zeux-pill">ZEUX</span><span>TRIVIA</span></div><h1 class="title" id="gameTitle" role="button" tabindex="0" aria-label="Reset quiz to first frame"><span>GUESS</span><span>THE CELEBRITY</span></h1></div></header>
 <div class="engagement-text" id="engagementText"><span>Like</span><span>Share</span><span>Subscribe</span></div>
 <div class="tip" id="tip"><span class="tip-layer current">💡 Pause the video if you need more time</span><span class="tip-layer next">Check first comment for answer <span class="tip-hand">👉</span></span></div>
 <section class="hints" id="hints">
@@ -139,7 +137,6 @@ $("quiz").addEventListener("click",event=>{if(event.target.closest(".hint"))star
 $("form").onsubmit=event=>{event.preventDefault();CONFIG.celebrity=$("celebrityInput").value.trim();CONFIG.hint1=$("hint1Input").value.trim();CONFIG.hint2=$("hint2Input").value.trim();CONFIG.hint3=$("hint3Input").value.trim();CONFIG.hint4=$("hint4Input").value.trim();reset();$("modal").classList.remove("open")};
 $("cancelBtn").onclick=()=>$("modal").classList.remove("open");
 $("modal").onclick=event=>{if(event.target===$("modal"))$("modal").classList.remove("open")};
-$("fullscreenBtn").onclick=async event=>{event.stopPropagation();try{if(!document.fullscreenElement)await $("quiz").requestFullscreen();else await document.exitFullscreen()}catch(e){console.warn("Fullscreen unavailable:",e)}};
 reset();
 </script>
 </body>
